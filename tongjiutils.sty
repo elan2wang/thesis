@@ -1,0 +1,62 @@
+\ProvidesPackage{tongjiutils}[2015/01/03 put any packages you would like to use here]
+
+
+% 处理数学公式中的黑斜体的宏包
+\RequirePackage{bm}
+
+% 不同于~|\mathcal| or |\mathfrak| 之类的英文花体字体
+\RequirePackage{mathrsfs}
+
+% 表格中支持跨行
+\RequirePackage{multirow}
+
+% 跨页表格
+\RequirePackage{longtable}
+
+% 固定宽度的表格
+\RequirePackage{tabularx}
+
+% 表格中的反斜线
+\RequirePackage{slashbox}
+
+% 确定浮动对象的位置，可以使用~H，强制将浮动对象放到这里（可能效果很差）
+\RequirePackage{float}
+
+
+% 处理中文问题
+\RequirePackage{xeCJK}
+\setCJKmainfont[BoldFont=STZhongsong, ItalicFont=STKaiti]{STSong}
+\setCJKsansfont[BoldFont=STHeiti]{STXihei}
+\setCJKmonofont{STFangsong}
+
+
+% 设置页面边距
+\RequirePackage[top=3.8cm, bottom=3.8cm, left=3.2cm, right=3.2cm]{geometry}
+
+
+% 调整目录特殊要求，重定义缩进量
+\RequirePackage{titletoc}
+\titlecontents*{chapter}								% <section-type>
+  		   [0pt]									% <left>
+		   {\addvspace{6pt}}							% <above-code>
+		   {\bfseries\chaptername\ \thecontentslabel\quad}	% <numbered-entry-format>
+		   {}										% <numberless-entry-format>
+		   {\bfseries\hfill\contentspage}					% <filler-page-format>
+\titlecontents{section}%
+                    [2em]%
+                    {\addvspace{6pt}}%
+                    {\thecontentslabel\enspace}%
+                    {}%
+                    {\dotfill\contentspage}%
+\titlecontents{subsection}%
+                    [4em]%
+                    {\addvspace{6pt}}%
+		   {\thecontentslabel\enspace}%
+		   {}%
+		   {\dotfill\contentspage}%
+
+
+% 定义自己常用的东西
+\newcommand{\china}{中华人民共和国}
+
+\endinput
