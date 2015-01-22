@@ -1,9 +1,24 @@
-\chapter{新闻故事线可视化方法研究}
+\chapter{新闻事件的可视化方法研究}
 
-\section{文本可视化方法研究}
-\subsection{静态主题可视化}
+\section{文本可视化相关方法}
+\subsection{单文本内容可视化}
+\subsubsection{标签云}
+标签云（tag cloud）又称为文本云（text cloud）
 
-\subsection{动态主题可视化}
+\subsubsection{单词树}
+单词树（world tree）
+
+\subsection{多文挡可视化}
+\subsubsection{星系试图}
+星系试图（galaxy view）
+
+\subsubsection{主题山地}
+主题山地（themescapes）
+
+\subsubsection{新闻地图}
+新闻地图 （newsmap）
+
+\subsection{时序文本可视化}
 对于时序文本，除了要呈现语料库的静态主题信息以外，更重要的是如何更好得对动态的主题变化进行可视化展现，而这也正是吸引广大研究人员的地方。下面将列举几个比较有代表性的集中方法：
 \subsubsection{Theme River}
 Theme River \cite{Havre:2000}是用于模拟主题随时间变化的可视化方法。主题河流通过不同颜色的色带表示不同的主题，色带的宽度表示主题的强度，色带越宽表示该主题在该时间段内的强度越强；反之，色带越窄表示主题在该时间段的影响越小。
@@ -11,59 +26,143 @@ Theme River \cite{Havre:2000}是用于模拟主题随时间变化的可视化方
 \subsubsection{Metro Map}
 Metro Map \cite{shahaf2012trains} 的想法缘自地铁的网络图，它是由一系列代表事件线索的线条组成，每个线条代表了事件的一个方面，线条的交叉和重叠部分表示不同线索之间的关联和融合。通过 Metro Map 用户可以很快的获得一个故事的整体情况。
 
-\subsubsection{Story Flow}
-Story Flow \cite{Liu:2013} 同样由一系列的线条组成，但不同的是每条线代表故事中的一个人物，通过线条之间的交叉来表示不同人物在不同时间点上的关联。每条线在时间轴上的起点和终点分别表示人物的出现和消亡，跨度则表示它在故事中出现的总时间。Stroy Flow 很好的刻画了故事中人物之间的关联关系，让用户清晰的看懂整个故事中的所有人物和重要时间点。
-
-\section{混合的新闻故事线可视化方法}
-结合新闻事件的特点，本文将提出一种混合的新闻故事线可视化方法。新闻故事线可视化中需要解决如下几个问题：
-\begin{itemize}
-\item 人物关系可视化，其中包含了：主人公表示，相关人物与主人公之间的关联关系表示，主人公之外人物之间的关系，以及他们是在什么时间产生关联。
-\item 主题内容可视化，这主要是如何更好的呈现不同时间段的主题信息，以及它们之间的变迁关系。
-\end{itemize}
-
-\section{人物关系可视化}
-\textbf{Figure. \ref{xkcd}} 是漫画网站 XKCD 上的一张描述电影《侏罗纪公园》中人物关系的叙事图（Narrative Charts）。该图中每条线分别代表电影中的一个角色，线条的交叉点表示在这个时间点上，角色同时出现并产生交互。该图很好的刻画了整部电影中不同角色的出场顺序以及他们之间的关系，让观众可以一目了然的了解故事的大概。
+\section{Storyline 方法研究}
+Storyline 是指描述的是人物之间随时间变化的社交关系，它将这些复杂的信息在一张图形上展现出来。该可视化方法最早是由 Mounroe 提出，并发布在著名漫画网站 XKCD 的 "Movie Narrative Charts" \cite{xkcd657} 中。在这个连载漫画中，手绘的 Storyline 用于概括电影中角色之间的互动。Figure.\ref{xkcd} 正是摘自 XKCD 网站。
 % BEGIN == XKCD 手绘图
 \begin{figure}[htb]
 	\centering
 		\includegraphics[width=15cm]{xkcd_jurassic_park}
-	\caption{Jurassic park 人物关系手绘叙事图，X轴表示时间，垂直方向的分组表示在该时间点，人物之间有交互}
+	\caption{Jurassic park 人物关系叙事图，X轴表示时间，每个线条分别代表一个角色}
 	\label{xkcd}
 \end{figure}
 % END == XKCD 手绘图
 
-本章节我们将研究如何将这类手绘的叙事图（Narrative Chart）应用在新闻故事的人物关系可视化中，并研究如何实现由语料库自动生成Narrative Chart。要实现这一目标，我们需要将任务细分为以下几个子任务。首先，我们需要分析 Narrative Chart 由哪些核心的要素组成，以及这些要素之间的关系；其次，我们需要研究如何从语料库中自动抽取出 Narrative Chart 所需的要素，并规范化数据格式供图表生成系统使用；最后，我们需要研究通过何种技术将得到的 Narrative Chart 要素数据渲染成图表，并设计一系列算法，解决图表生成过程中遇到的各种问题。
 
-\subsection{Narrative Chart 要素分析}
+\subsection{相关研究}
+@Todo 介绍 storyline 出现之前的一些展现故事的可视化方法，以及由 storyline 延伸来的可视化方法。
 
-\subsubsection{角色 Character}
-角色（Character 或是 Entity）是指故事中出现的人物，动物或其它角色。具体到新闻语料，角色是指新闻中出现的人、组织机构、国家等命名实体，它们一起构成了新闻故事六要素（时间、地点、人物、起因、经过和结果）之一的人物。电影、小说和新闻事件等通常都会有一个主角 （Main Character），所有的故事都围绕着主角展开和发展。因此，在我们的 Narrative Chart 也需要将主角（Main Character）与普通角色（Normal Character）区分开来。
+\subsection{设计原则}
+在介绍 storyline 的设计准则之前，我们首先定义 storyline 中最基本的一对映射关系：
+\begin{itemize}
+\item \textbf{角色（Character 或 Entity）}
+\item \textbf{线条（Thread）}
+\end{itemize}
+\textbf{Character} 是指故事中出现的人物或其他个体。新闻语料中，角色可以是人物、组织机构、国家等命名实体，它们一起构成了新闻故事六要素（时间、地点、人物、起因、经过和结果）之一的人物。电影、小说和新闻事件等通常都会有一个\textbf{主角（Leading Character）} 和若干的\textbf{配角（Ordinary Character）}，所有的故事都围绕着主角展开和发展，并通过配角来充实整个故事。为了将故事中的 \textbf{Characters} 以及它们之间发生的事件映射到 storyline 中，便得到了 storyline 设计的基本原则：
+\begin{itemize}
+\item 水平轴上从左往右的\textbf{线条}表示故事中一个\textbf{角色}完整的生命周期。
+\item 多个 \textbf{线条} 在某一时间段聚拢到一块，表示有这些\textbf{角色}共同参与了一个事件。线条之间的\textbf{收敛}和\textbf{发散}分别表示角色间的事件的开始和结束。
+\end{itemize}
+\textbf{Thread} 作为 \textbf{Characters} 的载体，每一个 \textbf{Thread}  都可以看作是故事的维度，一个由 \textbf{Threads} 组成的集合以及它们之间的位置随时间的变化（如：\textbf{收敛 Convergence}，\textbf{发散 Divergence} 和\textbf{交叉 Intersection}）描述了整个故事的发展变化。以上设计原则可以指导我们设计出更美观且易于理解的图形，因此被许多研究者广泛采用\cite{Ogawa:2010, Kim:2010}，并在构建特定领域的 storyline 上获得了一定程度上的成功。然而，这些以上原则并没有很好的将文本的上下文信息（如，位置）表现出来。为了更好的描述事件发生的位置信息，Tanahashi 和 Ma \cite{tanahashi2012design} 在storyline 中用一个封闭的轮廓线作为背景将事件圈起来，并用不同的颜色表示不同的事件。同时为了让 storyline 展现得更加美观并增强可读性，Tanahashi 和 Ma 还添加了一条新的标准：
+\begin{itemize}
+\item 线条只有在收敛和发散的时候才可以偏离原始的方向。
+\end{itemize}
+也就是说，要尽可能让线条保持直线，减少线条的摆动。本文中，我们将采用以上这些原则来设计我们的 storyline。
 
-\subsubsection{角色线索 Character Thread}
-角色线索（Character Thread）是指串连角色从第一次出现到最后一次出现的一条时间轴上的连线。每一条角色线索都可以看作是故事在一个维度的体现，它反应了故事在该维度上的发展和变化。两条或多条角色线索可能在一个或多个时间点交叉，表示这这两个或多个角色在当前时间点共同出现在故事中，在该时间点产生了关联。
+\subsection{最优化度量}
+\label{metrics}
+给定一个角色（实体，人物）的集合以及它们之间在时间上的关联关系，我们的目标是要构建出一个美观且易于理解的 storyline 可视化图形。图形布局的构建可以分解为一系列的最优化求解问题，在我们的布局最优化方法中，我们采用 Tanahashi 和 Ma \cite{tanahashi2012design} 提出的最优化度量标准来定义我们的优化目标。
+\begin{itemize}
+\item \textbf{线条交叉 Line Crossovers}：最小化线条交叉的数量。
+\item \textbf{线条摆动 Line Wiggles}：增强线条的笔直和连续性。
+\item \textbf{空白距离 White Space Gaps}：最小化空白空间之间的距离，增强紧凑度。
+\end{itemize}
+很显然\textbf{线条交叉}容易造成图形的混乱，所以应该最小化交叉的数量。\textbf{线条摆动}是指线条偏离了原始的方向，这会打断线条的连续性，因此减少线条摆动次数可以增强可读性。\textbf{空白距离}是指图形中两个可视元素之间的空白空间的大小，空白空间是图形中区分元素的必要组成部分，然后过度的距离不仅容易造成空间的浪费，更重要的是容易让读者误以为这是上下文中角色之间的语意距离，所以也应当减少不必要的空白空间。
 
-\subsubsection{场景 Scene}
-场景（Scene）是指一个或多个角色在某个时间点发生的事情，每一个场景都是故事发展的一个新的阶段，表示故事的最新动态。如果某个场景中出现了两个或多个角色，那么该时间点在 Narrative Chart 中体现为两个角色线索的交叉点。
+\section{Storyline 数据定义}
+在 Storyline 的可视化中用到的数据最基本的形式就是各个角色之间按时间先后顺序排列的交互列表。这些角色之间的一系列交互可以被拆分成一系列\textbf{会话 Session}，每个\textbf{会话}代表了一个时间跨度以及这段时间内有交互的角色集合。严格意义上，我们可以将\textbf{会话}定义为包含以下元素的基本单元：
+\begin{itemize}
+\item \textbf{起始时间}
+\item \textbf{时间跨度}
+\item \textbf{成员列表}
+\end{itemize}
+\textbf{起始时间}表示\textbf{会话}从何时开始，\textbf{时间跨度}表示该\textbf{会话}的持续时间，\textbf{成员列表}是指参与本次\textbf{会话}的所有角色的集合。
 
-\subsection{Narrative Chart 要素抽取}
-本小节，我们介绍如何从语料库中自动抽取角色（即：命名实体）信息，并定义表示 Narrative Chart 要素的数据格式。
+% BEGIN == JSON Schema & Example
+\begin{listing}
+\begin{minted}[frame=single, framesep=2mm, tabsize=4]{js}
+{
+    "sessions": [
+        {
+            "id": 0,
+            "start": 0,
+            "duration": 5,
+            "characters": [
+                0,
+                2
+            ]
+        }
+        {
+            "id": 1,
+            "start": 5,
+            "duration": 10,
+            "characters": [
+                0,
+                3,
+                10
+            ]
+        }
+   ]
+}
+\end{minted}
+\caption{JSON example} 
+\label{json-example}
+\end{listing}
+% END == JSON Schema & Example
 
-\subsubsection{命名实体抽取 Named Entity Extraction}
-实验中，我们只保留出现次数大于10次的角色。
+\section{Storyline 布局设计}
+布局设计中我们的主要目标就是最小化 \ref{metrics} 小节中提出的三个度量指标：\textbf{Line Crossover number}，\textbf{wiggle number}，\textbf{white space gaps}。 显然我们很难设计一个方法能够同时最优化以上三个指标，因为这需要在一个巨大的搜索空间内进行全面的尝试和探索。当然，如果不能求得全局的最优解，我们也可以采用\textbf{遗传算法}\cite{tanahashi2012design} 等来求得一个接近最优解的布局。然而，遗传算法的不足是获得的局部最优解经常会比较差，并且容易造成\textbf{早熟收敛}[@Todo reference]的问题。
 
-\subsubsection{场景构建 Scene Construction}
-场景构建的目的是为从语料库中抽取的命名实体建立关联关系，从而可以将其在 Narrative Chart 中予以表示。
-
-实验中，我们设置时间跨度为一周，在这一周内如果两个角色有同时出现在一篇报道中，则创建一个场景，如果在这一周内两个角色同时出现在多个场景中，在 Narrative Chart 中为了保证图表的可读性，我们也仅展示一个场景，但是点击该场景，可以显示所有详细的报道情况。
-
-\subsection{Narrative Chart 图表生成}
-
- \subsubsection{角色聚类 Characer Clustering}
-为了凸显主要角色对于故事的重要性，我们需要用特俗的方式来呈现主要角色，以区别于普通角色。一种有效的方式是，将表示主要角色的Thread线条加粗并且用更加明显的颜色（如：红色）来标记。DBSCAN (Density Based Spatial Clustering of Applications with Noise)
+为了弥补遗传算法的不足，并缩小搜索空间，我们将最优化的过程分解成几个独立的子问题。每个子问题分别最优化 \ref{metrics} 小节中的一个度量指标。子问题处理的原则是重要指标优先处理，因为它们对最终的可视化效果影响最为严重，更重要的是，在优化后续指标时不能影响前一指标的效果。已有研究[@Todo reference]指出减少线条交叉是最重要的步骤，减少线条的摆动以及空白距离次之。基于此，我们将问题分解成以下三个步骤：
+\begin{itemize}
+\item \textbf{步骤1：减少线条交叉的数目。}影响线条交叉数目最直接的因素就是线条的排列顺序以及会话的位置，因此为了减少线条不必要的交叉数目，我们要做的就是调整他们在空间上的排序以及位置。
+\item \textbf{步骤2：减少线条摆动的数目。}线条的摆动收到会话的位置的影响，因此要减少线条的摆动就要尽可能得将会话摆放在适当的位置。同时，保证在同一个时间段内独立的，没有参与任何会话的的线条保持直线。
+\item \textbf{步骤3：减少空白空间的距离。}为了使生成的图片更加的美观并且让信息更好的传递，我们还需要连续的优化空间中的空白距离。
+\end{itemize}
  
- \subsubsection{角色线索排序 Character Thread Ordering}
- 为了让 Narrative Charts 更好的呈现角色线索之间的关系，我们需要对 Character Thread 进行排序，使得这些 Thread 之间的非场景交叉尽可能减少，显然这个问题随着 Thread 数量的增加求解最佳解是一个 NP-Hard 问题。因此我们提出了一个启发式的试错算法，让最红的解向最优解不断靠近。
+ [@Todo 画图说明以上三个步骤]
+ 
+\subsection{线条排序}
+
+\subsection{元素对齐}
+\begin{equation}
+E_{align} = max \sum_{t=1}^{n_t-1} H\left(t\right)
+\end{equation}
+其中$H\left(t\right)$表示在$t$和$t+1$之间笔直线段的数目
+
+\begin{equation}
+E_{align} = \sum_{t=1}^{n_t-1} max H\left(t\right)
+\end{equation}
+
+
+\subsection{空间压缩} 
+\begin{equation}
+min \sum_{i=1}^{n_e} \sum_j^{n_t-1} \left(y_{i,j} - y_{i, j+1} \right)^2 + \beta \sum_{i=1}^{n_e} \sum_{j=1}^{n_t} y_{i,j}^2
+\end{equation}
+\label{eq:compact}
+其中
+\begin{subequations}
+\begin{align}
+	y_{i_1,j} < y_{i_2, j} & \qquad \text{If  } S_{i_1,j} \prec S_{i_2,j}; \label{eq:compact-1}\\
+	y_{i,j} = y_{i,j+1} & \qquad \text{If  } S_{i,j} \leftrightarrow S_{i+1, j}; \label{eq:compact-2}\\
+	y_{i,j} - y_{i+1,j} = d_{in} & \qquad \text{If  } SID(S_{i,j}) = SID(S_{i+1}, j); \label{eq:compact-3}\\
+	\left|y_{i,j} - y_{i+1,j}\right| \geq d_{out} & \qquad \text{If  } SID(S_{i,j}) \neq SID(S_{i+1}, j). \label{eq:compact-4}
+\end{align}
+\end{subequations}
+上面的式子中$S_{i,j}$指表示角色$i$在时间$j$内的线条片断, $y_{i,j}$表示$S_{i,j}$的$y$轴的坐标值；$SID(S_{i,j})$指$S_{i,j}$所在的会话ID。公式 \label{eq:compact} 中的第一项是线条摆动的惩罚函数，第二项是空白空间的惩罚函数。$\beta$ 是这两项之间的一个平衡因子，在我们的实验中，我们取 $\beta = 1$。以上的四个约束条件分别表示：
+\begin{itemize}
+\item (\ref{eq:compact-1}) 
+\item (\ref{eq:compact-2})
+\item (\ref{eq:compact-3})
+\item (\ref{eq:compact-4})
+\end{itemize}
 
 
 
-\section{主题变迁可视化}
+
+
+
+
+
+
+
+
