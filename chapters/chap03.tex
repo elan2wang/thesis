@@ -74,9 +74,10 @@ With the averaged variable $M = \frac{1}{2}(P+Q)$.
 \textbf{\emph{文本一致性 Coherence}} 度量的是文本之间主题的相似性。两个文本的一致性越高，表示这两篇文本的描述的内容越相似。从直觉角度出发，通常如果有一堆文本，如果这堆文本相互之间的一致性越高，那么用主题模型对文档集合进行建模时，能够挖掘的信息也就越丰富。以 \textbf{Figure.\ref{temporal distribution}} 中我们抓取的两个事件的新闻报道为例，方法一：我们将所有的报道全部作为一个集合进行主题挖掘；方法二，我们将各自事件的报道分开作为两个集合，分别进行主题挖掘。那么很显然方法二，所能挖掘出来的信息会更具体，我们能从方法二获得的事件的信息更多。
 
 换言之，如果我们在使用主题模型进行文本分析时，如果在同一个时间区间内的文本之间一致性越高，那么结果就会更显著，对事件的理解也会更深入。通常我们可以利用\emph{方差}来度量数据的一致性，但是它却不能很好的体现文本主题的一致性，因此我们通过\textbf{\emph{主题覆盖率 n Topic Coverage Rate ($TCR_n$)}}来间接的度量，定义如下：
-\begin{equation}\label{eq:tcr}
+\begin{equation}
 TCR_n = \frac{\left \| articles\;\;belong\;to\;these\;n\;topics \right \|}{\left \| all\;articles \right \|} * 100\%
 \end{equation}
+\label{eq:tcr}
 在\textbf{公式 \ref{eq:tcr}} 中，$\left \| \cdot \right \|$表示集合中元素的数量，$TCR_n$度量最相关的前n个主题对文本的覆盖率。从公式 \textbf{公式 \ref{eq:tcr}} ，我们可知，如果主题数$n$固定，那么$TCR_n$越大，文本之间的的一致性越高；同时，若$TCR_n$固定，那么主题数$n$越小，文本之间的一致性越高。
 
 
