@@ -68,7 +68,7 @@ Storyline 是指描述的是人物之间随时间变化的社交关系，它将�
 \end{itemize}
 很显然\textbf{线条交叉}容易造成图形的混乱，所以应该最小化交叉的数量。\textbf{线条摆动}是指线条偏离了原始的方向，这会打断线条的连续性，因此减少线条摆动次数可以增强可读性。\textbf{空白距离}是指图形中两个可视元素之间的空白空间的大小，空白空间是图形中区分元素的必要组成部分，然后过度的距离不仅容易造成空间的浪费，更重要的是容易让读者误以为这是上下文中角色之间的语意距离，所以也应当减少不必要的空白空间。
 
-\section{Storyline 数据定义}
+\section{Storyline 元素定义}
 在 Storyline 的可视化中用到的数据最基本的形式就是各个角色之间按时间先后顺序排列的交互列表。这些角色之间的一系列交互可以被拆分成一系列\textbf{会话 Session}，每个\textbf{会话}代表了一个时间跨度以及这段时间内有交互的角色集合。严格意义上，我们可以将\textbf{会话}定义为包含以下元素的基本单元：
 \begin{itemize}
 \item \textbf{起始时间}
@@ -76,7 +76,17 @@ Storyline 是指描述的是人物之间随时间变化的社交关系，它将�
 \item \textbf{成员列表}
 \end{itemize}
 \textbf{起始时间}表示\textbf{会话}从何时开始，\textbf{时间跨度}表示该\textbf{会话}的持续时间，\textbf{成员列表}是指参与本次\textbf{会话}的所有角色的集合。
+\subsection{Storyline 可视化元素定义}
+在 storyline 中可视化元素包括： \textbf{线条}，\textbf{角色标签}，\textbf{节点}和\textbf{会话框}。针对每一个可视化元素，他们分别包含了多种呈现方式。
+\begin{itemize}
+\item \textbf{线条}。颜色，为了便于区分不同角色，每个线条的颜色必须与和它相邻的线条不同，最好的情况时保证所有线条的颜色均不相同；宽度，所有线条的宽度都一样。
+\item \textbf{角色标签}。为了便于理解不同线条所代表的角色，角色标签将出现在线条的起点和终点。
+\item \textbf{节点}。线条中空心圆点表示角色的出现，实心圆点表示角色的消失。
+\item \textbf{会话框}。会话框呈现不规则的封闭图形，并且用不同颜色作为背景。会话框需要将参与会话的线条都囊括在内，同时必须排除未参加该会话的线条。
+\end{itemize}
 
+
+\subsection{Storyline 数据格式定义}
 % BEGIN == JSON Schema & Example
 \begin{listing}
 \begin{minted}[frame=single, framesep=2mm, tabsize=4]{js}
@@ -110,7 +120,7 @@ Storyline 是指描述的是人物之间随时间变化的社交关系，它将�
 % END == JSON Schema & Example
 
 \section{Storyline 布局设计}
-布局设计中我们的主要目标就是最小化 \ref{metrics} 小节中提出的三个度量指标：\textbf{Line Crossover number}，\textbf{wiggle number}，\textbf{white space gaps}。 显然我们很难设计一个方法能够同时最优化以上三个指标，因为这需要在一个巨大的搜索空间内进行全面的尝试和探索。当然，如果不能求得全局的最优解，我们也可以采用\textbf{遗传算法}\cite{tanahashi2012design} 等来求得一个接近最优解的布局。然而，遗传算法的不足是获得的局部最优解经常会比较差，并且容易造成\textbf{早熟收敛}[@Todo reference]的问题。
+布局设计中我们的主要目标就是最小化 \ref{metrics} 小节中提出的三个度量指标：\textbf{Line Crossover number}，\textbf{wiggle number}，\textbf{white space gaps}。 显然这是一个解空间极大的优化问题，要设计一个方法能够同时最优化以上三个指标是一项很困难的任务。对于此类解空间太大而不能轻易求得全局最优解的问题，我们也可以采用\textbf{遗传算法}\cite{tanahashi2012design} 等来求得一个接近最优的解决方案。然而，遗传算法的不足是获得的局部最优解经常会比较差，并且容易造成\textbf{早熟收敛}[@Todo reference]的问题。
 
 为了弥补遗传算法的不足，并缩小搜索空间，我们将最优化的过程分解成几个独立的子问题。每个子问题分别最优化 \ref{metrics} 小节中的一个度量指标。子问题处理的原则是重要指标优先处理，因为它们对最终的可视化效果影响最为严重，更重要的是，在优化后续指标时不能影响前一指标的效果。已有研究[@Todo reference]指出减少线条交叉是最重要的步骤，减少线条的摆动以及空白距离次之。基于此，我们将问题分解成以下三个步骤：
 \begin{itemize}
