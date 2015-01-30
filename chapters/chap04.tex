@@ -1,30 +1,4 @@
-\chapter{新闻事件的可视化方法研究}
-
-\section{文本可视化相关方法}
-\subsection{单文本内容可视化}
-\subsubsection{标签云}
-标签云（tag cloud）又称为文本云（text cloud）
-
-\subsubsection{单词树}
-单词树（world tree）
-
-\subsection{多文挡可视化}
-\subsubsection{星系试图}
-星系试图（galaxy view）
-
-\subsubsection{主题山地}
-主题山地（themescapes）
-
-\subsubsection{新闻地图}
-新闻地图 （newsmap）
-
-\subsection{时序文本可视化}
-对于时序文本，除了要呈现语料库的静态主题信息以外，更重要的是如何更好得对动态的主题变化进行可视化展现，而这也正是吸引广大研究人员的地方。下面将列举几个比较有代表性的集中方法：
-\subsubsection{Theme River}
-Theme River \cite{Havre:2000}是用于模拟主题随时间变化的可视化方法。主题河流通过不同颜色的色带表示不同的主题，色带的宽度表示主题的强度，色带越宽表示该主题在该时间段内的强度越强；反之，色带越窄表示主题在该时间段的影响越小。
-
-\subsubsection{Metro Map}
-Metro Map \cite{shahaf2012trains} 的想法缘自地铁的网络图，它是由一系列代表事件线索的线条组成，每个线条代表了事件的一个方面，线条的交叉和重叠部分表示不同线索之间的关联和融合。通过 Metro Map 用户可以很快的获得一个故事的整体情况。
+\chapter{新闻事件的可视化方法设计}
 
 \section{Storyline 方法研究}
 Storyline 是指描述的是人物之间随时间变化的社交关系，它将这些复杂的信息在一张图形上展现出来。该可视化方法最早是由 Mounroe 提出，并发布在著名漫画网站 XKCD 的 "Movie Narrative Charts" \cite{xkcd657} 中。在这个连载漫画中，手绘的 Storyline 用于概括电影中角色之间的互动。Figure.\ref{xkcd} 正是摘自 XKCD 网站。
@@ -133,16 +107,29 @@ Storyline 是指描述的是人物之间随时间变化的社交关系，它将�
  
 \subsection{线条排序}
 
-\subsection{元素对齐}
+\subsection{线条对齐}
+线条对齐主要是为了减少线条的摆动，让更多的线段保持在同一水平直线上，这样有利于读者跟踪角色随时间的变化，避免因线条的交叉和扭动，使得混淆线条与角色的关联关系。为了将这一问题量化，我们用以下的数学公式来表达：
 \begin{equation}
+\label{align-global}
 E_{align} = max \sum_{t=1}^{n_t-1} H\left(t\right)
 \end{equation}
-其中$H\left(t\right)$表示在$t$和$t+1$之间笔直线段的数目
+其中$H\left(t\right)$表示时间段$t$和$t+1$之间对齐的线段的数目。对于同一个角色在两个相邻时间段内的两条线段$S_t$和$S_{t+1}$，我们用线段的起点和终点坐标定义定义线段，则：
+\begin{subequations}
+\begin{align}
+	S_t & = <(x_i, y_i), (x_{i+1},y_{i+1})> \label{eq:segment-1}\\
+	S_{t+1} & = <(x_{i+1}, y_{i+1}), (x_{i+2},y_{i+2})> \label{eq:segment-2}
+\end{align}
+\end{subequations}
+如果该线条在时间段$t$和$t+1$之内保持对齐，那么必定能得到$y_i = y_{i+2}$；反之如果$y_i \neq y_{i+2}$，那么该线条在时间段$t$和$t+1$之内一定不对齐。
 
+[@Todo 画图说明这两个线段的几种画法]
+
+很显然，线段不对齐是因为它参与的会话与它的起始位置不在同一垂直位置上，因此为了使线段保持对齐，只需要调整会话位置。一旦会话的位置确定了，参与该会话的线条的位置也就确定了。公式 \ref{align-global} 的优化目标是使得所有时间段间的水平线段总和最多，是一个全局优化问题。根据上面的分析，我们可以将其转化为：
 \begin{equation}
+\label{align-local}
 E_{align} = \sum_{t=1}^{n_t-1} max H\left(t\right)
 \end{equation}
-
+从而将问题转变为一个局部优化问题，优化每一个局部从而使得整体最优。我们的目标变为使得每个相邻时间段内的水平线段数目最多。
 
 \subsection{空间压缩} 
 \begin{equation}
@@ -158,16 +145,13 @@ min \sum_{i=1}^{n_e} \sum_j^{n_t-1} \left(y_{i,j} - y_{i, j+1} \right)^2 + \beta
 	\left|y_{i,j} - y_{i+1,j}\right| \geq d_{out} & \qquad \text{If  } SID(S_{i,j}) \neq SID(S_{i+1}, j). \label{eq:compact-4}
 \end{align}
 \end{subequations}
-上面的式子中$S_{i,j}$指表示角色$i$在时间$j$内的线条片断, $y_{i,j}$表示$S_{i,j}$的$y$轴的坐标值；$SID(S_{i,j})$指$S_{i,j}$所在的会话ID。公式 \label{eq:compact} 中的第一项是线条摆动的惩罚函数，第二项是空白空间的惩罚函数。$\beta$ 是这两项之间的一个平衡因子，在我们的实验中，我们取 $\beta = 1$。以上的四个约束条件分别表示：
+上面的式子中$S_{i,j}$指表示角色$i$在时间$j$内的线段, $y_{i,j}$表示$S_{i,j}$的$y$轴的坐标值；$SID(S_{i,j})$指会话$S_{i,j}$的ID。公式 \label{eq:compact} 中的第一项是线条摆动的惩罚函数，第二项是空白空间的惩罚函数。$\beta$ 是这两项之间的一个平衡因子，在我们的实验中，我们取 $\beta = 1$。以上的四个约束条件分别表示：
 \begin{itemize}
-\item (\ref{eq:compact-1}) 
+\item (\ref{eq:compact-1}) 线条顺序约束。如果线段$S_{i_1,j}$的顺序小于$S_{i_2,j}$（我们用$S_{i_1,j} \prec S_{i_2,j}$表示），那么线段$S_{i_1,j}$被放置在$S_{i_2,j}$的上面。
 \item (\ref{eq:compact-2})
 \item (\ref{eq:compact-3})
 \item (\ref{eq:compact-4})
 \end{itemize}
-
-
-
 
 
 
