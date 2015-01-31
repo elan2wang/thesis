@@ -93,7 +93,9 @@ Storyline 是指描述的是人物之间随时间变化的社交关系，它将�
 \end{listing}
 % END == JSON Schema & Example
 
-\section{Storyline 布局设计}
+\section{Storyline 布局算法}
+本章节我们主要介绍 storyline 布局设计中的一些思想和使用的相关算法。首先我们将这个实际的问题进行抽象化描述，并用数学公式进行问题定义。
+\subsection{问题定义}
 布局设计中我们的主要目标就是最小化 \ref{metrics} 小节中提出的三个度量指标：\textbf{Line Crossover number}，\textbf{wiggle number}，\textbf{white space gaps}。 显然这是一个解空间极大的优化问题，要设计一个方法能够同时最优化以上三个指标是一项很困难的任务。对于此类解空间太大而不能轻易求得全局最优解的问题，我们也可以采用\textbf{遗传算法}\cite{tanahashi2012design} 等来求得一个接近最优的解决方案。然而，遗传算法的不足是获得的局部最优解经常会比较差，并且容易造成\textbf{早熟收敛}[@Todo reference]的问题。
 
 为了弥补遗传算法的不足，并缩小搜索空间，我们将最优化的过程分解成几个独立的子问题。每个子问题分别最优化 \ref{metrics} 小节中的一个度量指标。子问题处理的原则是重要指标优先处理，因为它们对最终的可视化效果影响最为严重，更重要的是，在优化后续指标时不能影响前一指标的效果。已有研究[@Todo reference]指出减少线条交叉是最重要的步骤，减少线条的摆动以及空白距离次之。基于此，我们将问题分解成以下三个步骤：
@@ -104,6 +106,7 @@ Storyline 是指描述的是人物之间随时间变化的社交关系，它将�
 \end{itemize}
  
  [@Todo 画图说明以上三个步骤]
+ 从数学角度考虑，storyline 的布局可以看成是一个有层次关系的 DAG（Directed Acyclic Graph）图，如Figure \ref{storyline-dag}。图中的每个节点代表了一个会话，根据会话发生的时间，可以将节点分为不同的层次，每个层次表示事件发展的一个阶段。
  
 \subsection{线条排序}
 
