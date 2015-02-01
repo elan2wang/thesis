@@ -42,7 +42,7 @@ Storyline 是指描述的是人物之间随时间变化的社交关系，它将�
 \end{itemize}
 很显然\textbf{线条交叉}容易造成图形的混乱，所以应该最小化交叉的数量。\textbf{线条摆动}是指线条偏离了原始的方向，这会打断线条的连续性，因此减少线条摆动次数可以增强可读性。\textbf{空白距离}是指图形中两个可视元素之间的空白空间的大小，空白空间是图形中区分元素的必要组成部分，然后过度的距离不仅容易造成空间的浪费，更重要的是容易让读者误以为这是上下文中角色之间的语意距离，所以也应当减少不必要的空白空间。
 
-\section{Storyline 元素定义}
+\section{Storyline 数据定义}
 在 Storyline 的可视化中用到的数据最基本的形式就是各个角色之间按时间先后顺序排列的交互列表。这些角色之间的一系列交互可以被拆分成一系列\textbf{会话 Session}，每个\textbf{会话}代表了一个时间跨度以及这段时间内有交互的角色集合。严格意义上，我们可以将\textbf{会话}定义为包含以下元素的基本单元：
 \begin{itemize}
 \item \textbf{起始时间}
@@ -50,7 +50,7 @@ Storyline 是指描述的是人物之间随时间变化的社交关系，它将�
 \item \textbf{成员列表}
 \end{itemize}
 \textbf{起始时间}表示\textbf{会话}从何时开始，\textbf{时间跨度}表示该\textbf{会话}的持续时间，\textbf{成员列表}是指参与本次\textbf{会话}的所有角色的集合。
-\subsection{Storyline 可视化元素定义}
+\subsection{可视化元素定义}
 在 storyline 中可视化元素包括： \textbf{线条}，\textbf{角色标签}，\textbf{节点}和\textbf{会话框}。针对每一个可视化元素，他们分别包含了多种呈现方式。
 \begin{itemize}
 \item \textbf{线条}。颜色，为了便于区分不同角色，每个线条的颜色必须与和它相邻的线条不同，最好的情况时保证所有线条的颜色均不相同；宽度，所有线条的宽度都一样。
@@ -60,7 +60,7 @@ Storyline 是指描述的是人物之间随时间变化的社交关系，它将�
 \end{itemize}
 
 
-\subsection{Storyline 数据格式定义}
+\subsection{数据格式定义}
 % BEGIN == JSON Schema & Example
 \begin{listing}
 \begin{minted}[frame=single, framesep=2mm, tabsize=4]{js}
@@ -94,19 +94,30 @@ Storyline 是指描述的是人物之间随时间变化的社交关系，它将�
 % END == JSON Schema & Example
 
 \section{Storyline 布局算法}
-本章节我们主要介绍 storyline 布局设计中的一些思想和使用的相关算法。首先我们将这个实际的问题进行抽象化描述，并用数学公式进行问题定义。
+本章节我们主要介绍 storyline 布局设计中的一些思想和使用的相关算法。首先我们需要对这个实际问题进行形式化的描述，也就是将它表述成了数学问题，然后用数学公式进行定义。
 \subsection{问题定义}
-布局设计中我们的主要目标就是最小化 \ref{metrics} 小节中提出的三个度量指标：\textbf{Line Crossover number}，\textbf{wiggle number}，\textbf{white space gaps}。 显然这是一个解空间极大的优化问题，要设计一个方法能够同时最优化以上三个指标是一项很困难的任务。对于此类解空间太大而不能轻易求得全局最优解的问题，我们也可以采用\textbf{遗传算法}\cite{tanahashi2012design} 等来求得一个接近最优的解决方案。然而，遗传算法的不足是获得的局部最优解经常会比较差，并且容易造成\textbf{早熟收敛}[@Todo reference]的问题。
+ 从数学角度考虑，Storyline 的布局可以看成是一个有层次关系的 DAG（Directed Acyclic Graph）图，如Figure \ref{storyline-dag}。图中的每个节点代表了一个会话，根据会话发生的时间，可以将节点分为不同的层次，每个层次表示事件发展的一个阶段。
+%% This part makes a figure
+\begin{figure}[h]
+  \dummyfig{此处应有图片} 
+  \caption{Storyline DAG Layout}
+  \label{storyline-dag}
+\end{figure}
 
-为了弥补遗传算法的不足，并缩小搜索空间，我们将最优化的过程分解成几个独立的子问题。每个子问题分别最优化 \ref{metrics} 小节中的一个度量指标。子问题处理的原则是重要指标优先处理，因为它们对最终的可视化效果影响最为严重，更重要的是，在优化后续指标时不能影响前一指标的效果。已有研究[@Todo reference]指出减少线条交叉是最重要的步骤，减少线条的摆动以及空白距离次之。基于此，我们将问题分解成以下三个步骤：
+布局设计中我们的主要目标就是最小化 \ref{metrics} 小节中提出的三个度量指标：\textbf{Line Crossover number}，\textbf{wiggle number}，\textbf{white space gaps}。 显然这是一个解空间极大的优化问题，要设计一个方法能够同时最优化以上三个指标是一项很困难的任务。对于此类解空间太大而不能轻易求得全局最优解的问题，我们也可以采用\textbf{遗传算法}\cite{tanahashi2012design} 等启发式算法来求得一个接近最优的解决方案。然而，遗传算法的不足是获得的局部最优解经常会比较差，并且容易造成\textbf{早熟收敛}[@Todo reference]的问题。
+
+既然一步到位同时优化以上三个指标比较困难，很自然的就想到将其分解成几个独立的子问题。每个子问题分别最优化 \ref{metrics} 小节中的一个度量指标。子问题处理的原则是重要指标优先处理，因为它们对最终的可视化效果影响最为严重，更重要的是，在优化后续指标时不能影响前一指标的效果。已有研究[@Todo reference]指出减少线条交叉是最重要的步骤，减少线条的摆动以及空白距离次之。基于此，我们将问题分解成以下三个步骤：
 \begin{itemize}
-\item \textbf{步骤1：减少线条交叉的数目。}影响线条交叉数目最直接的因素就是线条的排列顺序以及会话的位置，因此为了减少线条不必要的交叉数目，我们要做的就是调整他们在空间上的排序以及位置。
-\item \textbf{步骤2：减少线条摆动的数目。}线条的摆动收到会话的位置的影响，因此要减少线条的摆动就要尽可能得将会话摆放在适当的位置。同时，保证在同一个时间段内独立的，没有参与任何会话的的线条保持直线。
-\item \textbf{步骤3：减少空白空间的距离。}为了使生成的图片更加的美观并且让信息更好的传递，我们还需要连续的优化空间中的空白距离。
+\item \textbf{步骤1：排序。}影响线条交叉数目最直接的因素就是线条的排列顺序以及会话的位置，因此为了减少线条不必要的交叉，我们要做的就是调整他们在空间上的排序以及位置。
+\item \textbf{步骤2：对齐。}线条的摆动受会话位置的影响，因此要减少线条的摆动就要尽可能得将会话摆放在适当的位置。同时，保证在同一个时间段内独立的，没有参与任何会话的的线条保持直线。
+\item \textbf{步骤3：压缩。}为了使生成的图片更加的美观并且让信息更准确的传递，我们还需要连续的优化空间中的空白距离。
 \end{itemize}
- 
- [@Todo 画图说明以上三个步骤]
- 从数学角度考虑，storyline 的布局可以看成是一个有层次关系的 DAG（Directed Acyclic Graph）图，如Figure \ref{storyline-dag}。图中的每个节点代表了一个会话，根据会话发生的时间，可以将节点分为不同的层次，每个层次表示事件发展的一个阶段。
+如图 Figure \ref{fig:layout-steps} 解释了以上三个步骤。
+\begin{figure}[h]
+  \dummyfig{此处应有图片} 
+  \caption{Storyline 问题分解}
+  \label{fig:layout-steps}
+\end{figure}
  
 \subsection{线条排序}
 
@@ -123,9 +134,12 @@ E_{align} = max \sum_{t=1}^{n_t-1} H\left(t\right)
 	S_{t+1} & = <(x_{i+1}, y_{i+1}), (x_{i+2},y_{i+2})> \label{eq:segment-2}
 \end{align}
 \end{subequations}
-如果该线条在时间段$t$和$t+1$之内保持对齐，那么必定能得到$y_i = y_{i+2}$；反之如果$y_i \neq y_{i+2}$，那么该线条在时间段$t$和$t+1$之内一定不对齐。
-
-[@Todo 画图说明这两个线段的几种画法]
+如果该线条在时间段$t$和$t+1$之内保持对齐，那么必定能得到$y_i = y_{i+2}$；反之如果$y_i \neq y_{i+2}$，那么该线条在时间段$t$和$t+1$之内一定不对齐。如图 Figure \ref{fig:line-segment-layout} 分别表示了这两个线段的可能连接方式。
+\begin{figure}[h]
+  \dummyfig{此处应有图片} 
+  \caption{相邻线段的连接方式}
+  \label{fig:line-segment-layout}
+\end{figure}
 
 很显然，线段不对齐是因为它参与的会话与它的起始位置不在同一垂直位置上，因此为了使线段保持对齐，只需要调整会话位置。一旦会话的位置确定了，参与该会话的线条的位置也就确定了。公式 \ref{align-global} 的优化目标是使得所有时间段间的水平线段总和最多，是一个全局优化问题。根据上面的分析，我们可以将其转化为：
 \begin{equation}

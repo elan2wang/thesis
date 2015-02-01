@@ -72,4 +72,18 @@
 % 定义自己常用的东西
 \newcommand{\china}{中华人民共和国}
 
+% 缺省图片的placeholder
+\newcommand{\dummyfig}[1]{
+    \centering
+    \fbox{
+        \begin{minipage}[c][0.3\textheight][c]{0.8\textwidth}
+            \centering{#1}
+        \end{minipage}
+    }
+}
+
+% 假设 的格式定义
+\usepackage{ntheorem}
+\newtheorem{hyp}{假设}
+
 \endinput
