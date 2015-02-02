@@ -3,7 +3,7 @@
 \section{Storyline 方法研究}
 Storyline 是指描述的是人物之间随时间变化的社交关系，它将这些复杂的信息在一张图形上展现出来。该可视化方法最早是由 Mounroe 提出，并发布在著名漫画网站 XKCD 的 "Movie Narrative Charts" \cite{xkcd657} 中。在这个连载漫画中，手绘的 Storyline 用于概括电影中角色之间的互动。Figure.\ref{xkcd} 正是摘自 XKCD 网站。
 % BEGIN == XKCD 手绘图
-\begin{figure}[htb]
+\begin{figure}[!htb]
 	\centering
 		\includegraphics[width=15cm]{xkcd_jurassic_park}
 	\caption{Jurassic park 人物关系叙事图，X轴表示时间，每个线条分别代表一个角色}
@@ -98,7 +98,7 @@ Storyline 是指描述的是人物之间随时间变化的社交关系，它将�
 \subsection{问题定义}
  从数学角度考虑，Storyline 的布局可以看成是一个有层次关系的 DAG（Directed Acyclic Graph）图，如Figure \ref{storyline-dag}。图中的每个节点代表了一个会话，根据会话发生的时间，可以将节点分为不同的层次，每个层次表示事件发展的一个阶段。
 %% This part makes a figure
-\begin{figure}[h]
+\begin{figure}[!h]
   \dummyfig{此处应有图片} 
   \caption{Storyline DAG Layout}
   \label{storyline-dag}
@@ -113,7 +113,7 @@ Storyline 是指描述的是人物之间随时间变化的社交关系，它将�
 \item \textbf{步骤3：压缩。}为了使生成的图片更加的美观并且让信息更准确的传递，我们还需要连续的优化空间中的空白距离。
 \end{itemize}
 如图 Figure \ref{fig:layout-steps} 解释了以上三个步骤。
-\begin{figure}[h]
+\begin{figure}[!h]
   \dummyfig{此处应有图片} 
   \caption{Storyline 问题分解}
   \label{fig:layout-steps}
@@ -135,7 +135,7 @@ E_{align} = max \sum_{t=1}^{n_t-1} H\left(t\right)
 \end{align}
 \end{subequations}
 如果该线条在时间段$t$和$t+1$之内保持对齐，那么必定能得到$y_i = y_{i+2}$；反之如果$y_i \neq y_{i+2}$，那么该线条在时间段$t$和$t+1$之内一定不对齐。如图 Figure \ref{fig:line-segment-layout} 分别表示了这两个线段的可能连接方式。
-\begin{figure}[h]
+\begin{figure}[!h]
   \dummyfig{此处应有图片} 
   \caption{相邻线段的连接方式}
   \label{fig:line-segment-layout}

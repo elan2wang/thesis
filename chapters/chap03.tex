@@ -15,28 +15,28 @@
 \subsection{新闻报道的时序分布}
 当某一重大新闻事件$E_1$爆发时，通常在较短的时间内，各大媒体都会争相报道，此时关于此事件的报道数量会迅速达到一个峰值$P_1$。随着时间的该事件开始慢慢降温，或者发生了其他更具吸引力的事件$E_2$发生了，那么关于事件$E_1$的报道数量也会回落到一个较小的范围。然而，对于重要的新闻事件，随着时间的发展，不时会有新的信息被披露，每一次信息的披露都会让该事件重新获得上头条的机会，那么新闻的报道数量也就会重新攀升至一个新的峰值$P_2$。如此往复，重大新闻事件往往会经历几个阶段。
 
-如果我们将事件$E_1$每次报道数量达到峰值前后一段时间一起作为一个 \emph{阶段}，虽然在这个阶段内新闻的报道数量会非常多，但是实际上大部分的报道内容都非常的相似，因为各家媒体获得信息都差不多。然后，不同的阶段之间，报道的内容会有较大的不同。我们从英国卫报\emph{The Guardian} \footnote{http://www.theguardian.com/} 上分别抓取了以 \emph{Edward Snowden}和\emph{Obamacare}为关键词的新闻报道，Figure.\ref{temporal distribution} 表示他们的时序分布。正如我们的猜想，新闻报道的实际时序分布的确包含了多个波峰和波谷。
+如果我们将事件$E_1$每次报道数量达到峰值前后一段时间一起作为一个 \emph{阶段}，虽然在这个阶段内新闻的报道数量会非常多，但是实际上大部分的报道内容都非常的相似，因为各家媒体获得信息都差不多。然后，不同的阶段之间，报道的内容会有较大的不同。我们从英国卫报\emph{The Guardian} \footnote{http://www.theguardian.com/} 上分别抓取了以 \emph{Edward Snowden}和\emph{Obamacare}为关键词的新闻报道，Figure.\ref{fig:temporal-dist} 表示他们的时序分布。正如我们的猜想，新闻报道的实际时序分布的确包含了多个波峰和波谷。
 
 % BEGIN == 新闻报道的时序分布图
 \begin{figure}[htb]
 	\subfigure[Edward Snowden]{
 		\includegraphics[width=0.5\textwidth]{guardian_snowden}
-		\label{temporal distribution:snowden}
+		\label{fig:temporal-dist:snowden}
 	}
 	\subfigure[Obamacare]{
 		\includegraphics[width=0.5\textwidth]{guardian_obamacare}
-		\label{temporal distribution:obamacare}
+		\label{fig:temporal-dist:obamacare}
 	}
 	\caption{关于"Edward Snowden" 和 "Obamacare" 相关新闻的报道数量时序分布图. X轴表示时间（单位：天），Y轴表示新闻的报道数量（单位：篇）}
-	\label{temporal distribution}
+	\label{fig:temporal-dist}
 \end{figure}
 % END == 新闻报道的时序分布图
 
 \subsection{新闻语料的时序划分}
 \label{sec:ada-kmeans}
-DTM \cite{Blei:2006}是由David Blei等人提出的动态主题模型，该模型将语料库均匀（如按年，月，日等）划分为多个子集，由此获得的每个子集时间跨度都相同。然而，根据我们上一小节分析的可以知道，均匀划分语料库的方法显然有许多不妥之处。首先，各个子集的文本数量上可能会有很大的差异，有的子集文本数量非常多，有点非常少；其次，均匀划分时前后时间段的分割点，可能恰好落在 Figure.\ref{temporal distribution} 所示的波峰位置，这样就把一堆一致性非常高的文本划分到了两个阶段。
+DTM \cite{Blei:2006}是由David Blei等人提出的动态主题模型，该模型将语料库均匀（如按年，月，日等）划分为多个子集，由此获得的每个子集时间跨度都相同。然而，根据我们上一小节分析的可以知道，均匀划分语料库的方法显然有许多不妥之处。首先，各个子集的文本数量上可能会有很大的差异，有的子集文本数量非常多，有点非常少；其次，均匀划分时前后时间段的分割点，可能恰好落在 Figure.\ref{fig:temporal-dist} 所示的波峰位置，这样就把一堆一致性非常高的文本划分到了两个阶段。
 
-基于上面的分析，我们可以得到一个合理的划分语料库所需满足的几个条件：首先，每个时间段内的文本具有较高的一致性，它们可能都是报道事件的同一个方面或同一个进展；第二，尽量保障每个时间段的文档数量不要太少。从 Figure.\ref{temporal distribution} 来看的话，一个好的分割点应该是落在波谷附近。
+基于上面的分析，我们可以得到一个合理的划分语料库所需满足的几个条件：首先，每个时间段内的文本具有较高的一致性，它们可能都是报道事件的同一个方面或同一个进展；第二，尽量保障每个时间段的文档数量不要太少。从 Figure.\ref{fig:temporal-dist} 来看的话，一个好的分割点应该是落在波谷附近。
 
 为了实现语料库的自动划分，我们设计了一个自适应的聚类算法 \emph{Adaptive K-Means Algorithm}. 该算法是基于K-Means \cite{kanungo2002efficient} 改进而来，弥补了K-Means需要手动设置聚类数的不足。该算法是一个迭代算法，每一次迭代将聚类数目加1，并且计算本次迭代结束后，聚类中所有点离其中心点的\textbf{加权平均距离（Weighted Mean Distance）}，该距离公式定义如下：
 \begin{equation}
@@ -84,7 +84,7 @@ Weighted\;Mean\;Distance=\frac{\sum_{i=1}^{n}{mean\;distance\;of\;cluster\;i}}{n
 
 \subsection{分析方法的整体框架}
 \label{sec:framework}
-我们的分析框架是基于LDA（Latent Dirichlet Allocation）\cite{Blei:2003}模型。LDA 是一个生成式模型，它的基本思想是：将每个文档看成是一个词的袋子，每个词都是通过文档的一个或多个主题确定的。形式化表示，可以将文档表示成一个主题的多项式分布，同时每一个主题又可以看成是词语的多项式分布。对于模型的参数评估我们采用 Collapsed Gibbs Sampling \cite{griffiths2004finding, heinrich2005parameter}。 LDA 模型假设所有文档都是可交换的，显然对于新闻，邮件，学术文章等时序文本并不满足可交换性。对于这类时序文本的分析，\ref{intro-dtm} 小节介绍了经典的 DTM 模型，然而正如我们在 \ref{sec:ada-kmeans} 小节中的分析，它也自己的局限性。因此，本小节我们将提出我们的自己的一个分析方法。首先，我们将利用 \ref{sec:ada-kmeans} 小节中提出的方法对语料库进行划分，将一个大的语料库划分成时间区间，文章数目不等的多个子语料库，然后再各个子语料库中分别利用 LDA 模型进行主题抽取，最后在分析各个子语料库间的关联性，并画出主题演化图。Figure \ref{system-overview} 详细描述了框架的各个步骤：
+我们的分析框架是基于LDA（Latent Dirichlet Allocation）\cite{Blei:2003}模型。LDA 是一个生成式模型，它的基本思想是：将每个文档看成是一个词的袋子，每个词都是通过文档的一个或多个主题确定的。形式化表示，可以将文档表示成一个主题的多项式分布，同时每一个主题又可以看成是词语的多项式分布。对于模型的参数评估我们采用 Collapsed Gibbs Sampling \cite{griffiths2004finding, heinrich2005parameter}。 LDA 模型假设所有文档都是可交换的，显然对于新闻，邮件，学术文章等时序文本并不满足可交换性。对于这类时序文本的分析，\ref{intro-dtm} 小节介绍了经典的 DTM 模型，然而正如我们在 \ref{sec:ada-kmeans} 小节中的分析，它也自己的局限性。因此，本小节我们将提出我们的自己的一个分析方法。首先，我们将利用 \ref{sec:ada-kmeans} 小节中提出的方法对语料库进行划分，将一个大的语料库划分成时间区间，文章数目不等的多个子语料库，然后再各个子语料库中分别利用 LDA 模型进行主题抽取，最后在分析各个子语料库间的关联性，并画出主题演化图。Figure.\ref{system-overview} 详细描述了框架的各个步骤：
 % BEGIN == 新闻报道的时序分布图
 \begin{figure}[htb]
 	\includegraphics[width=1.0\textwidth]{system_overview}
@@ -114,7 +114,7 @@ D_{JS} \left ( P||Q \right ) = \frac{1}{2} D_{KL} \left ( P||M \right ) + \frac{
 其中，$M = \frac{1}{2}(P+Q)$。
 
 \subsection{文本一致性及其度量}
-\textbf{\emph{文本一致性 Coherence}} 度量的是文本之间主题的相似性。两个文本的一致性越高，表示这两篇文本的描述的内容越相似。从直觉角度出发，通常如果有一堆文本，如果这堆文本相互之间的一致性越高，那么用主题模型对文档集合进行建模时，能够挖掘的信息也就越丰富。以 Figure.\ref{temporal distribution} 中我们抓取的两个事件的新闻报道为例，方法一：我们将所有的报道全部作为一个集合进行主题挖掘；方法二，我们将各自事件的报道分开作为两个集合，分别进行主题挖掘。那么很显然方法二，所能挖掘出来的信息会更具体，我们能从方法二获得的事件的信息更多。
+文本一致性（Coherence） 度量的是文本之间主题的相似性。两个文本的一致性越高，表示这两篇文本的描述的内容越相似。从直觉角度出发，通常如果有一堆文本，如果这堆文本相互之间的一致性越高，那么用主题模型对文档集合进行建模时，能够挖掘的信息也就越丰富。以 Figure.\ref{fig:temporal-dist} 中我们抓取的两个事件的新闻报道为例，方法一：我们将所有的报道全部作为一个集合进行主题挖掘；方法二，我们将各自事件的报道分开作为两个集合，分别进行主题挖掘。那么很显然方法二，所能挖掘出来的信息会更具体，我们能从方法二获得的事件的信息更多。
 
 换言之，如果我们在使用主题模型进行文本分析时，如果在同一个时间区间内的文本之间一致性越高，那么结果就会更显著，对事件的理解也会更深入。通常我们可以利用\emph{方差}来度量数据的一致性，但是它却不能很好的体现文本主题的一致性，因此我们通过\textbf{主题覆盖率（n Topic Coverage Rate, $TCR_n$)}来间接的度量，定义如下：
 \begin{equation}
@@ -123,12 +123,13 @@ TCR_n = \frac{\left \| articles\;\;belong\;to\;these\;n\;topics \right \|}{\left
 \end{equation}
 在公式 \ref{eq:tcr} 中，$\left \| \cdot \right \|$表示集合中元素的数量，$TCR_n$度量最相关的前n个主题对文本的覆盖率。从公式 \ref{eq:tcr}，我们可知，如果主题数$n$固定，那么$TCR_n$越大，文本之间的的一致性越高；同时，若$TCR_n$固定，那么主题数$n$越小，文本之间的一致性越高。
 
+
 \section{实验结果和分析}
 本小节中，我们通过实验结果来阐述以上提到的方法和度量指标。首先我们将通过两个语料库的数据来说明 \ref{algo:ada-kmeans} 的划分结果，它们分别是从英国卫报上爬下来的新闻数据，一个是根据关键词“Edward Snowden”，另一个是根据关键词“Obamacare”。接着我们重点分析“Edward Snowden”这个语料库，用我们 \ref{sec:framework} 小节中提出的分析框架进行分析，并得到事件发展的主题演化图。“Edward Snowden”这一语料库共包含文档1550篇，时间跨度从事件发生的2013年6月9号到2013年结束，整个语料库包含单词150万左右，通过预处理（每个单词至少出现5次），最终保留的的单词数为7732。
 \subsection{语料库划分结果}
 \label{sec:ada-kmeans-result}
 % BEGIN == 语料库划分结果图
-\begin{figure}[htb]
+\begin{figure}[!htb]
 	\subfigure[Edward Snowden]{
 		\includegraphics[width=0.5\textwidth]{guardian_snowden_change}
 		\label{fig:cluster-snowden-trend}
@@ -149,26 +150,29 @@ TCR_n = \frac{\left \| articles\;\;belong\;to\;these\;n\;topics \right \|}{\left
 	\label{fig:cluster}
 \end{figure}
 % END == 语料库划分结果图
-我们的语料库的时间跨度相对较长，因此实验中我们设置的最大时间段数为20，另外通过反复的实验对比，我们将聚类加权平均距离的减小量阀值设为0.5。由于 \emph{adaptive k-means algorithm} 是一个迭代算法，迭代的结束的条件是加权平均距离的减小量小于阀值，或者达到最大迭代次数。迭代结束时的时间段数目便是我们最终确定的阶段数目。Figure \ref{fig:cluster} 分别展示了两个语料库的最终划分结果，以及迭代过程中加权平均距离的变化趋势。
+我们的语料库的时间跨度相对较长，因此实验中我们设置的最大时间段数为20，另外通过反复的实验对比，我们将聚类加权平均距离的减小量阀值设为0.5。由于 \emph{adaptive k-means algorithm} 是一个迭代算法，迭代的结束的条件是加权平均距离的减小量小于阀值，或者达到最大迭代次数。迭代结束时的时间段数目便是我们最终确定的阶段数目。Figure.\ref{fig:cluster} 分别展示了两个语料库的最终划分结果，以及迭代过程中加权平均距离的变化趋势。
 
 \subsection{主题演化图分析}
 \label{sec:evolution-map}
-考虑到语料库是针对某一个具体的新闻事件，因此主题的数并不会太多，在绘制主题演化图时我们仅选取了概率最大的前三个主题，其中一个为主主题，两个为辅助主题。Figure \ref{fig:evolution-our}是通过本文提出的方法获得的主题演化图；Figure \ref{fig:evolution-even} 与 Figure \ref{fig:evolution-our} 的不同之处在于语料库的划分方式不同， Figure \ref{fig:evolution-even}  是通过时间均匀划分得到的子语料库；Figure \ref{fig:evolution-dtm} 是通过 DTM 模型得到的主题演化图。三种方法所划分的时间段数目都一样 \footnote{每个时间段内标注的日期表示该阶段的起始日期，同时也是前一个阶段的结束日期}。
+考虑到语料库是针对某一个具体的新闻事件，因此主题的数并不会太多，在绘制主题演化图时我们仅选取了概率最大的前三个主题，其中一个为主主题，两个为辅助主题。Figure.\ref{fig:evolution-our}是通过本文提出的方法获得的主题演化图；Figure.\ref{fig:evolution-even} 与 Figure.\ref{fig:evolution-our} 的不同之处在于语料库的划分方式不同， Figure.\ref{fig:evolution-even}  是通过时间均匀划分得到的子语料库；Figure.\ref{fig:evolution-dtm} 是通过 DTM 模型得到的主题演化图。三种方法所划分的时间段数目都一样 \footnote{每个时间段内标注的日期表示该阶段的起始日期，同时也是前一个阶段的结束日期}。
 
-其中 Figure \ref{fig:evolution-our} 和 Figure \ref{fig:evolution-even}中的有向剪头链接的是整个语料的的主主题。对比这两张演化图，我们可以很明显的发现，采用本文提出的语料库划分算法，最终的得到的主主题在不同时间段内都能很好的保持连续性，它始终是相邻两个时间段内相似度最高的两个主题。而采用均匀划分语料库的方法得到的主题演化图，主主题在第4和第5个时间段内发生了变化，同样在第5和第6个时间段内再一次发生了变化，这种主主题的不一致容易让读者误以为在这个时间点，语料库发生了变化，它们针对的可能并不是一个事件，不利于主题跟踪。
+其中 Figure.\ref{fig:evolution-our} 和 Figure.\ref{fig:evolution-even}中的有向剪头链接的是整个语料的的主主题。对比这两张演化图，我们可以很明显的发现，采用本文提出的语料库划分算法，最终的得到的主主题在不同时间段内都能很好的保持连续性，它始终是相邻两个时间段内相似度最高的两个主题。而采用均匀划分语料库的方法得到的主题演化图，主主题在第4和第5个时间段内发生了变化，同样在第5和第6个时间段内再一次发生了变化，这种主主题的不一致容易让读者误以为在这个时间点，语料库发生了变化，它们针对的可能并不是一个事件，不利于主题跟踪。
 
-同样，通过对比 Figure \ref{fig:evolution-our} 和 Figure \ref{fig:evolution-dtm}，我们可以发现 DTM 获得的主题演化图在各个时间段内主题几乎没有发生变化，例如时间段1-5内的主题1中概率最大的前10个单词是一模一样的，只不过出现的概率发生了细微变化，而其它几个主题的情况也差不多。对于这样的主题演化图，我们几乎不能从中得出时间随时间发展发生了怎样的变化。
+同样，通过对比 Figure.\ref{fig:evolution-our} 和 Figure.\ref{fig:evolution-dtm}，我们可以发现 DTM 获得的主题演化图在各个时间段内主题几乎没有发生变化，例如时间段1-5内的主题1中概率最大的前10个单词是一模一样的，只不过出现的概率发生了细微变化，而其它几个主题的情况也差不多。对于这样的主题演化图，我们几乎不能从中得出时间随时间发展发生了怎样的变化。
 
 % BEGIN == 采用本文方法获得的主题演化图
-\begin{figure}[htb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=1.0\textwidth]{evolution_lda_kmeans}
 	\caption{采用本文方法获得的 "Edward Snowden" 事件的主题演化图}
 	\label{fig:evolution-our}
 \end{figure}
 % END == 采用本文方法获得的主题演化图
+
+通过 Figure.\ref{fig:evolution-our}，我们可以很明了的看到，这个语料库讲的是“Edward Snowden”事件，主主题很好了反应了这一点。然后通过各个阶段的辅助主题，我们进一步分析事件的发展。从第一个阶段的辅助主题中的关键词“China, Hong Kong, TV”，我们可以知道 Snowden 是在中国香港的电视台发布了美国政府的监控计划；通过第二个阶段的辅助主题的关键词“asylum, moscow, request”，我们可以了解到 Snowden 开始向俄罗斯申请政治庇护。通过后续各个阶段的辅助主题，我们便能够对整个事件有一个全局的了解。
+
 % BEGIN == 采用本文方法获得的主题演化图
-\begin{figure}[ht]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=1.0\textwidth]{evolution_lda_even}
 	\caption{采用按时间均匀划分语料库的方法获得的 "Edward Snowden" 事件的主题演化图}
@@ -176,47 +180,40 @@ TCR_n = \frac{\left \| articles\;\;belong\;to\;these\;n\;topics \right \|}{\left
 \end{figure}
 % END == 采用本文方法获得的主题演化图
 % BEGIN == 采用DTM获得的主题演化图
-\begin{figure}[hb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=1.0\textwidth]{evolution_dtm_15}
 	\caption{采用DTM模型获得的 "Edward Snowden" 事件的主题演化图}
 	\label{fig:evolution-dtm}
 \end{figure}
 % END == 采用DTM获得的主题演化图
+在针对特定事件的语料库时，DTM表现的非常并不是很理想，是因为 DTM 假设在整个语料库中主题的数目是固定的，并且所有的主题都是通过第一个时间区间演化而来的，因此它不能发现后续时间区间内新产生的主题。对于大规模的语料库，如由不同研究方法不同学科的所有学术文章构成的语料库，并且这里面包含的研究方向和方法从一开始便出现了，一直延续和发展到现在，DTM 模型能够很好的跟踪每个学科和方向随时间变化的发展。但是对于针对特定事件或特定研究领域的语料库，DTM 模型存在着先天的不足。
 
-通过 Figure \ref{fig:evolution-our}，我们可以很明了的看到，这个语料库讲的是“Edward Snowden”事件，主主题很好了反应了这一点。然后通过各个阶段的辅助主题，我们进一步分析事件的发展。从第一个阶段的辅助主题中的关键词“China, Hong Kong, TV”，我们可以知道 Snowden 是在中国香港的电视台发布了美国政府的监控计划；通过第二个阶段的辅助主题的关键词“asylum, moscow, request”，我们可以了解到 Snowden 开始向俄罗斯申请政治庇护。通过后续各个阶段的辅助主题，我们便能够对整个事件有一个全局的了解。
-
-\subsection{文档一致性分析}
+\subsection{文本一致性实验结果}
+从 \ref{sec:evolution-map} 小节，我们已经看到使用本文提出的方法在抽取某一事件的主题演化图时有明显的优势。本小节我们将通过实验数据说明为什么会产生这样的结果，同时验证本章最初提出的 \textbf{假设 \ref{hyp:coherence}} 。
 \label{sec:coherence-result}
-本小节我们将通过实验结果分析，为什么通过本文的方法得到结果比简单的将语料库按时间均匀划分效果要好。同时也验证了本章最初提出的\textbf{假设 \ref{hyp:coherence}}。
-
 % BEGIN == 文档一致性分析图
-\begin{figure}[htb]
+\begin{figure}[!htb]
 	\centering
 	\subfigure[$TCR_5$]{
 		\includegraphics[width=0.48\textwidth]{cover_rate_snowden_5_topic}
-		\label{fig:fig:tcr_5}
+		\label{fig:tcr_5}
 	}
 	\subfigure[Average $TCR_n$]{
 		\includegraphics[width=0.48\textwidth]{avg_cover_rate_snowden}
 		\label{fig:tcr_n}
 	}	
-	\caption{$TCR_n$ of corpus about "Edward Snowden"}
+	\caption{“Edward Snowden” 语料库的 $TCR_n$ 分析}
 	\label{fig:tcr}
 \end{figure}
 % END == 文档一致性分析图
 
+Figure.\ref{fig:tcr} 展示的是我们通过两种不同的方法对“Edward Snowden”事件相关的语料库进行划分后，得到的子语料库内文本一致性数据。蓝色线条实星点表示的折线代表的是我们按时间均匀划分语料库得到的数据，黑色线空心点表示的折线是采用本文提出的 Algorithm \ref{algo:ada-kmeans} 进行语料库划分得到的结果。Figure.\ref{fig:tcr_5} 表示的是概率最大的前5个主题在不同时间段内的文档覆盖率，从图中可以看到，采用本文方法在大部分的时间段内，文本一致都要高于均匀划分。为了更好的衡量前n个主题在所有时间段内的平均文档覆盖率，我们分别计算了前1个到前12个主题，在所有时间段内的平均文档覆盖率。从 Figure.\ref{fig:tcr_n} 采用本文方法进行划分所得的子语料库中文本一致性普遍高于均匀划分。结合 \ref{sec:evolution-map} 小节的实验结果和 Figure.\ref{fig:tcr} 的数据，我们可以认为本文最初提出的 \textbf{假设 \ref{hyp:coherence}} 是正确的。 
 
+\subsection{本章小结}
+本小节我们首先分析了针对新闻事件的报道的时序分布情况，并针对这一分布特点提出了一个简单有效的语料库划分算法 \emph{adaptive k-means algrithm}。采用我们提出的划分算法所得到的子语料库能够很好的保证文档的一致性，而我们认为一致性越高的文档集合更加有利于我们使用主题模型进行信息挖掘，通过我们的实验结果也验证了这一假设。接着我们提出了一套用于跟踪新闻事件主题演化的分析框架，基于该框架我们最终能将新闻事件自动的划分为几个阶段，并且发现每个阶段内事件的最新动向和发展，同时通过主主题很好的衔接各个的阶段。
 
-
-
-
-
-
-
-
-
-
+本章提出的方法着眼于挖掘针对某一个事件或某一研究领域的特定语料库，通过利用它们在时序分布上的信息，结合主题模型进行深度挖掘，试图获得它们更加丰富的主题演化信息。这一出发点有别于其他一些研究者，专注于规模大且主题比较混合的语料库。本文提出的方法也可以很好的与其它一些文本分析的方法进行结合，如自动摘要抽取等。将来我们希望能将本方法进一步完善，并开发一套可以供用户交互的新闻事件分析程序，以便让媒体人或普通的读者能够在更短的时间内更好的了解事件的整体发展。
 
 
 
