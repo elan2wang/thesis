@@ -19,12 +19,13 @@
 
 % BEGIN == 新闻报道的时序分布图
 \begin{figure}[htb]
+	\centering
 	\subfigure[Edward Snowden]{
-		\includegraphics[width=0.5\textwidth]{guardian_snowden}
+		\includegraphics[width=0.48\textwidth]{guardian_snowden}
 		\label{fig:temporal-dist:snowden}
 	}
 	\subfigure[Obamacare]{
-		\includegraphics[width=0.5\textwidth]{guardian_obamacare}
+		\includegraphics[width=0.48\textwidth]{guardian_obamacare}
 		\label{fig:temporal-dist:obamacare}
 	}
 	\caption{关于"Edward Snowden" 和 "Obamacare" 相关新闻的报道数量时序分布图. X轴表示时间（单位：天），Y轴表示新闻的报道数量（单位：篇）}
@@ -70,6 +71,13 @@ Weighted\;Mean\;Distance=\frac{\sum_{i=1}^{n}{mean\;distance\;of\;cluster\;i}}{n
   \label{algo:ada-kmeans}
 \end{algorithm}
 % END == 自适应聚类算法 伪代码
+
+\subsubsection{异常点处理}
+通过以上算法获得的划分会出现一些奇异点会被划分到相邻的聚类中，为了保证聚类 $Cluster_i$ 内的所有点在时间轴上均小于 $Cluster_{i+1}$ 并大于 $Cluster_{i-1}$ 内的点，我们需要对通过以上算法获得的结果进行一些修正。修正的方法如下：
+\begin{itemize}
+\item 异常点查找。对于划分正确的点，在时间轴上与该点相邻的左右两个点必定至少有一个和它是属于同一聚类，如果
+\item 重新确定类标。
+\end{itemize}
 
 \section{结合时序信息的主题模型}
 本章节主要介绍我们如何将新闻文档的时序分布信息结合到主题模型，并通过这个结合的模型去分析时序文本的主题演化，得到主题演化图。最后，我们我们会分析为什么结合时序分布信息后能有效的增强主题模型的效果。
@@ -130,20 +138,21 @@ TCR_n = \frac{\left \| articles\;\;belong\;to\;these\;n\;topics \right \|}{\left
 \label{sec:ada-kmeans-result}
 % BEGIN == 语料库划分结果图
 \begin{figure}[!htb]
+	\centering
 	\subfigure[Edward Snowden]{
-		\includegraphics[width=0.5\textwidth]{guardian_snowden_change}
+		\includegraphics[width=0.48\textwidth]{guardian_snowden_change}
 		\label{fig:cluster-snowden-trend}
 	}
 	\subfigure[Edward Snowden]{
-		\includegraphics[width=0.5\textwidth]{guardian_snowden_cluster}
+		\includegraphics[width=0.48\textwidth]{guardian_snowden_cluster}
 		\label{fig:cluster-snowden-result}
 	}
 	\subfigure[Obamacare]{
-		\includegraphics[width=0.5\textwidth]{guardian_obamacare_change}
+		\includegraphics[width=0.48\textwidth]{guardian_obamacare_change}
 		\label{fig:cluster-obamacare-trend}
 	}
 	\subfigure[Obamacare]{
-		\includegraphics[width=0.5\textwidth]{guardian_obamacare_cluster}
+		\includegraphics[width=0.48\textwidth]{guardian_obamacare_cluster}
 		\label{fig:cluster-obamacare-result}
 	}	
 	\caption{聚类过程中平均加权距离的变化趋势以及最终的划分结果。图（a）和（c）中的$\otimes$ 表示最佳的时间段数目， 图（b）和（d）中的 $\otimes$表示各个类的中心点，并且在图（b）和（d）中每一种颜色分别代表一个聚类}
