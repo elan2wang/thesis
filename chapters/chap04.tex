@@ -282,7 +282,33 @@ min \sum_{i=1}^{n_e} \sum_j^{n_t-1} \left(y_{i,j} - y_{i, j+1} \right)^2 + \beta
 % BEGIN == 拖拽会话使得线条重排序
 
 \subsection{隐藏/显示实体}
-在生成的storyline中，有时实体数量会比较多，因此线条关系会比较复杂。对于某一个用户而言，它并不需要同时查看所有的实体之间的关系，因此允许用户隐藏他不关心的实体，仅保留它关心的实体显得非常实用。对于隐藏的实体，若用户可以重新勾选使其展现出来。隐藏和显示实体并不影响原始的storyline布局，因此用户可以随意组合自己想要查看的实体。
+在生成的storyline中，有时实体数量会比较多，因此线条关系会比较复杂。对于某一个用户而言，它并不需要同时查看所有的实体之间的关系，因此允许用户隐藏他不关心的实体，仅保留它关心的实体显得非常实用。对于隐藏的实体，若用户可以重新勾选使其展现出来。隐藏和显示实体并不影响原始的storyline布局，因此用户可以随意组合自己想要查看的实体，如 Figure \ref{fig:hide-character} 所示。
+% BEGIN == 隐藏和显示实体
+\begin{figure}[htb]
+	\centering
+	\subfigure[显示所有实体时]{
+		\includegraphics[width=\textwidth, fbox]{hide-character-before}
+		\label{fig:hide-character-before}
+	}
+	\subfigure[隐藏部分实体后]{
+		\includegraphics[width=\textwidth, fbox]{hide-character-after}
+		\label{fig:hide-character-after}
+	}
+	\caption{显示和隐藏实体}
+	\label{fig:hide-character}
+\end{figure}
+% BEGIN == 隐藏和显示实体
+
+\subsection{展示会话详情}
+通过storyline，用户可以了解哪些实体在什么时间点发生了交互，但是却不知道在该时间点它们之间具体发生了什么事情。为了更好的让用户了解每个会话所发生的事件详情，我们为每个会话都添加了上下文信息。当鼠标移动到会话位置，会出现一个弹框，弹框内包含了该会话的主题，以及与该会话相关的文章的链接地址。用户可以通过主题词了解事件的重要信息，同时还可以点击具体的详情文章了解具体信息，如 Figure \ref{fig:session-with-context} 所示。
+% BEGIN == 展示会话详情
+\begin{figure}[!htb]
+	\centering
+		\includegraphics[width=\textwidth, fbox]{session-with-context}
+	\caption{显示会话详情}
+	\label{fig:session-with-context}
+\end{figure}
+% END == 展示会话详情
 
 \section{可视化实现}
 为了更好的展示可视化结果并提供交互式的用户体验，我们选择了Web端作为展示平台，因此在实现过程中使用的主要技术为JavaScript和SVG，并且使用了d3.js\footnote{http://d3js.org/}，Viz.js\footnote{https://github.com/mdaines/viz.js}和Graphlib-dot\footnote{https://github.com/cpettitt/graphlib-dot/wiki}等开源框架来来帮助我们实现绘图以及运行和解析DOT。
@@ -331,20 +357,36 @@ x_s = x_b - Min(panel\_width*10, (x_b - x_a)*3.0/10.0);
   \begin{tabular}{|*{9}{l |}}\hline
                     & \multicolumn{2}{c|}{数据源} & \multicolumn{2}{c|}{运行时间（秒）} & \multicolumn{2}{c|}{线条交叉数} & \multicolumn{2}{c|}{线条摆动数目} \\ \hline
                     & 实体数目 &  时间片数 & 本文方法 & TM 方法 & 本文方法 & TM 方法 & 本文方法 & TM 方法 \\ \hline
-    StarWars & 14           & 50             & NaN         & 130       &  NaN       &  93        &  NaN       & 133        \\ \hline
-    Inception &  8            & 71             & NaN         & 150       &  NaN       &  99        &  NaN       & 162        \\ \hline
-    Matrix      & 14           & 42             & NaN         & 172       &  NaN       &  43        &  NaN       & 94          \\ \hline
+    StarWars & 14           & 50             & 3              & 130       &  48          &  93         &  66           & 133        \\ \hline
+    Inception &  8            & 71             & 3              & 150       &  49          &  99         &  82           & 162        \\ \hline
+    Matrix      & 14           & 42             & NaN         & 172       &  NaN       &  43         &  NaN       & 94          \\ \hline
   \end{tabular}
 \end{center}
 \end{table}
+
+% BEGIN == segment
+\begin{figure}[htb]
+	\centering
+	\subfigure[StarWars]{
+		\includegraphics[width=\textwidth, fbox]{layout-starwars}
+		\label{fig:star-wars}
+	}
+	\subfigure[Inception]{
+		\includegraphics[width=\textwidth, fbox]{layout-inception}
+		\label{fig:inception}
+	}
+	\subfigure[Matrix]{
+		\includegraphics[width=\textwidth, fbox]{layout-starwars}
+		\label{fig:matrix}
+	}
+	\caption{最终结果}
+	\label{fig:layout-sample}
+\end{figure}
+% END == segment
 
 \subsection{案例分析}
 新闻故事的人物关系 storyline，以“Edward Snow”事件为例。
 
 \section{本章小结}
-
-
-
-
-
+本章我们首先介绍了一种可视化方法－storyline，该方法是用于描述实体之间随时间变化的交互关系。然而已有的生成storyline 的方法中，有些是针对特定领域的，有些是计算过程非常耗时的，有些需要纯手动绘制。为了能运用storyline来描述新闻事件中人物之间的交互关系，我们提出了自己的一套方法来生成storyline。该方法分三个步骤：排序，对齐，压缩。每一步分别对storyline的一个指标进行优化，通过迭代的方法最终获得一个最优的图形。最后，我们还根据storyline的特点提供了几种用户交互方式，既可以进一步优化图形，还可以让用户更好的理解事件详情。
 
