@@ -347,9 +347,9 @@ x_s = x_b - Min(panel\_width*10, (x_b - x_a)*3.0/10.0);
 % END == segment
 
 \section{实验结果与分析}
-
+本小节，我们首先通过定量的分析，将本文方法与Tanahashi 和 Ma\cite{tanahashi2012design}方法进行对比。然后采用 storyline 方法对上一章节中的“Edward Snowden”这一新闻事件进行实体关系分析，让用户可以从实体的角度出发了解事件的发展，以及关键实体对事件的影响。
 \subsection{定量分析}
-我们首先比较本文方法与TM方法在生成storyline时所消耗的时间，从 Table \ref{table:quantitative-analysis} 可以很清楚的看到，TM方法所消耗的时间是本文方法的百倍以上。原因是TM算法是基于遗传算法进行优化，而遗传算法的问题之一就是它需要设置一个较大的繁衍代数，因此消耗的时间会很长。
+为了验证本文所提出的storyline生成方法的有效性，我们与Tanahashi 和 Ma\cite{tanahashi2012design}提出的方法进行比较（为了简化，后文用TM来表示他们提出的方法）。实验中，我们采用了三个数据集，数据采集自三部电影，分别是：“Starwars”，“Inception”和“The Matrix”。实验中，我们比较三个指标：运行时间，线条交叉数和线条摆动数。实验中，TM方法所产生的实验结果是根据他们的网站上\footnote{http://vis.cs.ucdavis.edu/~tanahashi/data\_downloads/storyline\_visualizations/}提供的源码运行所得，由于遗传算法每次的结果均不完全一样，因此 Table \ref{table:quantitative-analysis} 中的数据是10次试验所得的平均值。
 \begin{table}[htb]
 \caption{本文方法与TM方法的定量对比}
 \label{table:quantitative-analysis}
@@ -357,35 +357,43 @@ x_s = x_b - Min(panel\_width*10, (x_b - x_a)*3.0/10.0);
   \begin{tabular}{|*{9}{l |}}\hline
                     & \multicolumn{2}{c|}{数据源} & \multicolumn{2}{c|}{运行时间（秒）} & \multicolumn{2}{c|}{线条交叉数} & \multicolumn{2}{c|}{线条摆动数目} \\ \hline
                     & 实体数目 &  时间片数 & 本文方法 & TM 方法 & 本文方法 & TM 方法 & 本文方法 & TM 方法 \\ \hline
-    StarWars & 14           & 50             & 3              & 130       &  48          &  93         &  66           & 133        \\ \hline
-    Inception &  8            & 71             & 3              & 150       &  49          &  99         &  82           & 162        \\ \hline
-    Matrix      & 14           & 42             & 3              & 172       &  26          &  43         &  50           & 94          \\ \hline
+    StarWars & 14           & 50             & ~3           & ~141       &  48          &  73        &  66           & 98         \\ \hline
+    Inception &  8            & 71             & ~3           & ~178       &  49          &  97         &  82           & 149        \\ \hline
+    Matrix      & 14           & 42             & ~3           & ~217       &  26          &  43         &  50           & 91          \\ \hline
   \end{tabular}
 \end{center}
 \end{table}
 
+从 Table \ref{table:quantitative-analysis} 可以很清楚的看到，TM方法所消耗的时间是本文方法的几十倍以上。原因是TM算法是基于遗传算法进行优化，而遗传算法的问题之一就是它需要设置一个较大的繁衍代数，因此消耗的时间会很长。同样，本文方法在减少线条交叉数目以及线条摆动方法也表现更加优秀，因为遗传算法的另一个缺点是，容易陷入局部最优。而本文首先通过构架一个 DAG 图获得了一个较优的初始布局，然后通过后面的迭代算法，能够在较短时间内找到一个更好的局部最优解。
+
+下面的 Figure {fig:layout-comparison} 是用本文方法以及TM方法生成的“Inception”和“The Matrix”的storyline的效果图对比。其中TM方法生成的最重效果图是直接从Tanahashi 和 Ma\cite{tanahashi2012design}的论文中复制而来。两组效果图中，TM方法在最重的图形中添加了位置信息，而本文方法生成的结果中并没有添加这一信息，该信息只是在storyline的基础上添加的一些辅助信息，对storyline的生成没有任何影响。
 % BEGIN == segment
 \begin{figure}[htb]
 	\centering
-	\subfigure[StarWars]{
-		\includegraphics[width=\textwidth, fbox]{layout-starwars}
-		\label{fig:star-wars}
-	}
-	\subfigure[Inception]{
+	\subfigure[由本文方法生成的 Inception 的 storyline]{
 		\includegraphics[width=\textwidth, fbox]{layout-inception}
 		\label{fig:inception}
 	}
-	\subfigure[Matrix]{
+	\subfigure[由TM方法生成的 Inception 的 storyline]{
+		\includegraphics[width=\textwidth, fbox]{layout-inception-tm}
+		\label{fig:inception-tm}
+	}
+	\subfigure[由本文方法生成的The Matrix 的 storyline]{
 		\includegraphics[width=\textwidth, fbox]{layout-matrix}
 		\label{fig:matrix}
 	}
-	\caption{最终结果}
-	\label{fig:layout-sample}
+	\subfigure[由TM方法生成的The Matrix 的 storyline]{
+		\includegraphics[width=\textwidth, fbox]{layout-matrix-tm}
+		\label{fig:matrix-tm}
+	}
+	\caption{电影 “Inception” 和 “The Matrix” 的 storyline 效果图对比}
+	\label{fig:layout-comparison}
 \end{figure}
 % END == segment
 
 \subsection{案例分析}
-新闻故事的人物关系 storyline，以“Edward Snow”事件为例。
+本小节用storyline来分析新闻事件中实体的交互关系，并以“Edward Snow”事件为例。为了生成storyline，首先我们要从文档集合生成 Listing \ref{list:json-sample} 所示的输入数据。为了得到这一storyline的初始数据，我们需要完成以下几个工作：文本预处理，命名实体抽取，命名实体统计，命名实体关系构建。
+
 
 \section{本章小结}
 本章我们首先介绍了一种可视化方法－storyline，该方法是用于描述实体之间随时间变化的交互关系。然而已有的生成storyline 的方法中，有些是针对特定领域的，有些是计算过程非常耗时的，有些需要纯手动绘制。为了能运用storyline来描述新闻事件中人物之间的交互关系，我们提出了自己的一套方法来生成storyline。该方法分三个步骤：排序，对齐，压缩。每一步分别对storyline的一个指标进行优化，通过迭代的方法最终获得一个最优的图形。最后，我们还根据storyline的特点提供了几种用户交互方式，既可以进一步优化图形，还可以让用户更好的理解事件详情。
