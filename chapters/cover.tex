@@ -1,0 +1,148 @@
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+\secretlevel{保密} \secretyear{2}
+
+\ctitle{基于主题模型的新闻故事线生成方法研究}
+
+%% 按照申请工学学位设计。如有其它需要，请修改相应文字。
+\makeatletter
+  \iftongji@doctor
+    \cdegree{博士}
+  \else
+    \iftongji@master
+      \cdegree{硕士}
+    \fi
+  \fi
+
+\makeatother
+
+\cstudent{王坚}
+
+\cstudentid{1233700}
+
+\cdepartment{电子信息与工程学院}
+
+\cmajorfirst{工科}
+
+\cmajorsecond{计算机应用技术}
+
+\csupervisor{赵卫东 研究员}
+
+% 如果没有副指导老师或者联合指导老师，把各自{}中内容留空即可。
+
+\cassosupervisor{王俊丽 副研究员}
+
+\makeatletter
+  \iftongji@doctor
+    \edegree{Doctor of Philosophy}
+  \else
+    \iftongji@master
+      \edegree{Master of Science}
+    \fi
+  \fi
+
+\makeatother
+
+\etitle{Topic Model Based News Storyline Generation Method Research}
+
+\estudent{Jian Wang}
+
+\estudentid{1233700}
+
+\edepartment{College of Electronic and Information Engineering}
+
+\emajorfirst{Engineering}
+
+\emajorsecond{Computer Application Technology}
+
+\esupervisor{Prof. Weidong Zhao}
+
+\eassosupervisor{Prof. Junli Wang}
+
+
+%% 定义中英文摘要和关键字
+\begin{cabstract}
+  新闻作为人们了解社会动态最直接的信息来源，在信息的传播过程中扮演着极其重要的角色。
+  然而随着互联网技术的快速发展，新闻的来源、传播和阅读方式已经发生了巨大的变化，面
+  对如此海量的新闻报道，如何能够快速筛选和过虑，进而获取有效信息已经变得越来越困难。
+  尤其对于某些重大的新闻事件，由于报道数量多、时间跨度长、涉及人物多且关系复杂，想
+  要在短时间内了解事件完整的发展变化和人物关系是一件非常困难的工作。为此，本文提出
+  了一套有效的方法来自动抽取事件的主题演化以及重要人物随时间变化的交互关系。
+
+  新闻报道的六要素是：事件的起因，经过，结果，时间，地点，人物。本文首先通过结合新
+  闻报道时序分布特点进行主题建模，挖掘事件的发展过程；接着通过Storyline方法来可
+  视化呈现事件中重要人物之间的交互关系；从而向读者呈现事件发展的完整故事线。本文的
+  主要工作包括以下几个方面：
+
+  \begin{asparaenum}[(1)]
+    \item 挖掘了新闻报道的时序分布特点。通过分析针对特定新闻事件所有相关报道的时
+    间分布数据后，我们发现了大部分重大新闻事件的报道数量随时间的分布都呈现出了一个
+    共性：在事件的整个发展历程中，与之相关的报道数量在时间轴上呈现出多个波峰和波谷，
+    波峰和波谷交替出现。基于这一特点，我们提出了一种自适应的聚类算法对语料库进行划
+    分。
+    \item 提出了结合时序分布特点的主题模型，并将该模型用于新闻事件的主题演化分析。
+    相比其他动态的主题模型，本模型关注的语料库主题比较集中，我们的目标是挖掘某一事
+    件发展过程中更多的信息，如：该事件有哪些阶段，各个阶段的关注点是什么。同时，我
+    们通过实验验证了，根据时序分布特点划分后的子语料库有更强的文本一致性，并且在对
+    有强一致性的文本集合进行主题分析时能够获得更多主题信息。
+    \item 采用Storyline方法对新闻事件中的人物关系进行可视化呈现和分析。提出了一
+    套高效的混合优化算法来生成Storyline，并且探索了Storyline的交互式渐进优化方法。
+  \end{asparaenum}
+
+  通过本文方法得到故事线，可以帮助用户在很短的时间内对某一新闻事件有一个全局的了解，
+  并且通过可视化的方式也可以很方便的引导用户深入了解事件各个阶段的详情。未来我们希
+  望基于本文提出的算法框架开发一套可交互的开放的Web服务，让用户可以根据自己的需求
+  自动生成任何新闻事件的故事线。
+
+\end{cabstract}
+
+\ckeywords{新闻事件, 主题模型, 故事线, 时序分布, 人物交互, 可视化}
+
+\begin{eabstract}
+  News report is one of the most important information source where 
+  we obtain the recent dynamics of our society. With the rapid
+  development of Internet technology, where the news is from, how
+  they spread and how we read has changed dramatically. While facing
+  such massive amounts of reports, it becomes more and more
+  difficulty to filter information so as to gain effective message.
+  Especially for some big event, it is almost an impossible job to
+  figure out the detailed progress and the complicated entity
+  interactions. Therefore, we put forward a method framework to 
+  track the topic evolution and visualize the entity interactions.
+
+  The basic elements of news report includes: the cause of things, after
+  and the result, when, where and who. In order to present the whole
+  development to readers, We first track the topic evolution
+  by incorporating temporal information into topic model and then use
+  storyline layout to visulize the chracters' interactions along time.
+  Specifically, our work makes the following contributions:
+
+  \begin{asparaenum}[(1)]
+    \item Exploring the temporal distribution of new report. By
+    analyzing the temporal distribution data of some big events, we
+    found that they share some common characters: during the 
+    whole development, the quantity of related news report exhibit
+    several peaks and valleys and each peak is followed by an valley.
+    We proposed an adaptive cluster algorithm to divide the corpus
+    based on the temporal information.
+    \item Incorporating the temporal information into topic model to
+    track the topic evolution of news event. Compared to other dynamic
+    topic model, our model focuses on a specific event and tries to 
+    reveal more details about the event, such as, how many stages are
+    there in the event, what aspect does each stage focus on, etc. 
+    \item Applying Storline layout to visualize the characters'
+    interactions of the event. Proposing an efficient hybrid
+    optimization approach to generate the storyline, and exploring
+    the interactive ways to improve the storyline layout progressively. 
+  \end{asparaenum}
+
+  In the next step, we plan to build an interactive open web service
+  which could automatically generate storyline layout for any news
+  event according to users' specification.
+
+\end{eabstract}
+
+\ekeywords{Topic Evolution, Temporal Distribution, Storyline, Visulization}

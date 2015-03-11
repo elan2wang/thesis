@@ -1,0 +1,61 @@
+\BOOKMARK [-1][]{ctitle.-1}{基于主题模型的新闻故事线生成方法研究}{}% 1
+\BOOKMARK [0][]{tongjichapter.1.0}{摘要}{ctitle.-1}% 2
+\BOOKMARK [0][]{tongjichapter.2.0}{Abstract}{ctitle.-1}% 3
+\BOOKMARK [0][]{tongjichapter.3.0}{目录}{ctitle.-1}% 4
+\BOOKMARK [0][]{tongjichapter.4.0}{主要符号对照表}{ctitle.-1}% 5
+\BOOKMARK [0][]{chapter.1}{第 1 章 引言}{ctitle.-1}% 6
+\BOOKMARK [1][-]{section.1.1}{1.1 研究背景及意义}{chapter.1}% 7
+\BOOKMARK [1][-]{section.1.2}{1.2 国内外研究现状}{chapter.1}% 8
+\BOOKMARK [1][-]{section.1.3}{1.3 本文的主要研究内容}{chapter.1}% 9
+\BOOKMARK [1][-]{section.1.4}{1.4 本文的组织结构}{chapter.1}% 10
+\BOOKMARK [1][-]{section.1.5}{1.5 本章小结}{chapter.1}% 11
+\BOOKMARK [0][]{chapter.2}{第 2 章 相关工作}{ctitle.-1}% 12
+\BOOKMARK [1][-]{section.2.1}{2.1 概率主题模型}{chapter.2}% 13
+\BOOKMARK [2][-]{subsection.2.1.1}{2.1.1\040LDA}{section.2.1}% 14
+\BOOKMARK [2][-]{subsection.2.1.2}{2.1.2\040DTM}{section.2.1}% 15
+\BOOKMARK [1][-]{section.2.2}{2.2 文本可视化}{chapter.2}% 16
+\BOOKMARK [2][-]{subsection.2.2.1}{2.2.1 单文本内容可视化}{section.2.2}% 17
+\BOOKMARK [2][-]{subsection.2.2.2}{2.2.2 多文挡可视化}{section.2.2}% 18
+\BOOKMARK [2][-]{subsection.2.2.3}{2.2.3 时序文本可视化}{section.2.2}% 19
+\BOOKMARK [1][-]{section.2.3}{2.3 本章小结}{chapter.2}% 20
+\BOOKMARK [0][]{chapter.3}{第 3 章 新闻事件的主题演化分析}{ctitle.-1}% 21
+\BOOKMARK [1][-]{section.3.1}{3.1 新闻事件的时序分析}{chapter.3}% 22
+\BOOKMARK [2][-]{subsection.3.1.1}{3.1.1 新闻报道的时序分布}{section.3.1}% 23
+\BOOKMARK [2][-]{subsection.3.1.2}{3.1.2 新闻语料的时序划分}{section.3.1}% 24
+\BOOKMARK [1][-]{section.3.2}{3.2 结合时序信息的主题模型}{chapter.3}% 25
+\BOOKMARK [2][-]{subsection.3.2.1}{3.2.1 基本概念}{section.3.2}% 26
+\BOOKMARK [2][-]{subsection.3.2.2}{3.2.2 整体框架}{section.3.2}% 27
+\BOOKMARK [2][-]{subsection.3.2.3}{3.2.3 主题相似度计算}{section.3.2}% 28
+\BOOKMARK [2][-]{subsection.3.2.4}{3.2.4 文本一致性及其度量}{section.3.2}% 29
+\BOOKMARK [1][-]{section.3.3}{3.3 实验结果和分析}{chapter.3}% 30
+\BOOKMARK [2][-]{subsection.3.3.1}{3.3.1 语料库划分结果}{section.3.3}% 31
+\BOOKMARK [2][-]{subsection.3.3.2}{3.3.2 主题演化图分析}{section.3.3}% 32
+\BOOKMARK [2][-]{subsection.3.3.3}{3.3.3 文本一致性分析}{section.3.3}% 33
+\BOOKMARK [2][-]{subsection.3.3.4}{3.3.4 本章小结}{section.3.3}% 34
+\BOOKMARK [0][]{chapter.4}{第 4 章 新闻事件的人物交互关系可视化设计}{ctitle.-1}% 35
+\BOOKMARK [1][-]{section.4.1}{4.1 Storyline 方法研究}{chapter.4}% 36
+\BOOKMARK [2][-]{subsection.4.1.1}{4.1.1 设计原则}{section.4.1}% 37
+\BOOKMARK [2][-]{subsection.4.1.2}{4.1.2 最优化度量}{section.4.1}% 38
+\BOOKMARK [2][-]{subsection.4.1.3}{4.1.3 数据格式定义}{section.4.1}% 39
+\BOOKMARK [1][-]{section.4.2}{4.2 Storyline 布局算法}{chapter.4}% 40
+\BOOKMARK [2][-]{subsection.4.2.1}{4.2.1 问题定义}{section.4.2}% 41
+\BOOKMARK [2][-]{subsection.4.2.2}{4.2.2 初始布局}{section.4.2}% 42
+\BOOKMARK [2][-]{subsection.4.2.3}{4.2.3 排序}{section.4.2}% 43
+\BOOKMARK [2][-]{subsection.4.2.4}{4.2.4 对齐}{section.4.2}% 44
+\BOOKMARK [2][-]{subsection.4.2.5}{4.2.5 压缩}{section.4.2}% 45
+\BOOKMARK [1][-]{section.4.3}{4.3 Storyline 交互式优化}{chapter.4}% 46
+\BOOKMARK [2][-]{subsection.4.3.1}{4.3.1 拖拽会话}{section.4.3}% 47
+\BOOKMARK [2][-]{subsection.4.3.2}{4.3.2 隐藏/显示实体}{section.4.3}% 48
+\BOOKMARK [2][-]{subsection.4.3.3}{4.3.3 展示会话详情}{section.4.3}% 49
+\BOOKMARK [1][-]{section.4.4}{4.4 可视化实现}{chapter.4}% 50
+\BOOKMARK [2][-]{subsection.4.4.1}{4.4.1 线条绘制}{section.4.4}% 51
+\BOOKMARK [1][-]{section.4.5}{4.5 实验结果与分析}{chapter.4}% 52
+\BOOKMARK [2][-]{subsection.4.5.1}{4.5.1 定量分析}{section.4.5}% 53
+\BOOKMARK [2][-]{subsection.4.5.2}{4.5.2 案例分析}{section.4.5}% 54
+\BOOKMARK [1][-]{section.4.6}{4.6 本章小结}{chapter.4}% 55
+\BOOKMARK [0][]{chapter.5}{第 5 章 总结与展望}{ctitle.-1}% 56
+\BOOKMARK [1][-]{section.5.1}{5.1 本文的工作}{chapter.5}% 57
+\BOOKMARK [1][-]{section.5.2}{5.2 下一步工作展望}{chapter.5}% 58
+\BOOKMARK [0][]{section*.52}{参考文献}{ctitle.-1}% 59
+\BOOKMARK [0][]{section*.54}{致谢}{ctitle.-1}% 60
+\BOOKMARK [0][]{section*.56}{个人简历、在学期间发表的学术论文与研究成果}{ctitle.-1}% 61

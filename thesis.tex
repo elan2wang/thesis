@@ -1,21 +1,51 @@
-\documentclass{book}
+\documentclass[master, nofonts]{tongjithesis}
 
 \usepackage{tongjiutils}
+\usepackage[top=2.54cm, bottom=2.54cm, left=3.17cm, right=3.17cm]{geometry}
 
 \begin{document}
 
-% 目录
+\graphicspath{{./figures/}}
+
+\frontmatter
+\input{chapters/cover}
+\makecover
+
+%% 目录
 \tableofcontents
 
-% 正文章节
+%% 符号对照表
+\input{chapters/denotation}
+
+%% 以下索引按需要选择
+% 插图索引
+% \listoffigures
+% 表格索引
+% \listoftables
+% 公式索引
+% \listofequations
+
+%% 正文章节
+\mainmatter
 \include{chapters/chap01}
 \include{chapters/chap02}
 \include{chapters/chap03}
 \include{chapters/chap04}
+\include{chapters/chap05}
 
-% 参考文献
-\bibliographystyle{unsrt}
-\linespread{1} 
+%% 其它部分
+\backmatter
+
+\makeatother
+
+%% 参考文献
+\bibliographystyle{tongjibib}
 \bibliography{/Users/wangjian/Dropbox/Papers/library}
+
+%% 致谢
+\include{chapters/ack}
+
+%% 个人简历
+\include{chapters/resume}
 
 \end{document}

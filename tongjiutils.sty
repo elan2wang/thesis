@@ -30,47 +30,8 @@
 % 算法
 \RequirePackage[ruled,lined,linesnumbered]{algorithm2e}
 
-% 处理图片
-\RequirePackage{graphicx}
-\RequirePackage{subfigure}
-\graphicspath{{./figures/}}
 % 图片边框
 \usepackage[export]{adjustbox}
-
-% 处理中文问题
-\RequirePackage{xeCJK}
-\setCJKmainfont[BoldFont=STZhongsong, ItalicFont=STKaiti]{STSong}
-\setCJKsansfont[BoldFont=STHeiti]{STXihei}
-\setCJKmonofont{STFangsong}
-
-
-% 设置页面边距
-\RequirePackage[top=3.8cm, bottom=3.8cm, left=3.2cm, right=3.2cm]{geometry}
-% 设置行间距和段间距
-\linespread{1.6}
-% 设置字体大小
-\fontsize{12pt}{\baselineskip}
-
-% 调整目录特殊要求，重定义缩进量
-\RequirePackage{titletoc}
-\titlecontents*{chapter}								% <section-type>
-  		   [0pt]									% <left>
-		   {\addvspace{6pt}}							% <above-code>
-		   {\bfseries\chaptername\ \thecontentslabel\quad}	% <numbered-entry-format>
-		   {}										% <numberless-entry-format>
-		   {\bfseries\hfill\contentspage}					% <filler-page-format>
-\titlecontents{section}%
-                    [2em]%
-                    {\addvspace{6pt}}%
-                    {\thecontentslabel\enspace}%
-                    {}%
-                    {\dotfill\contentspage}%
-\titlecontents{subsection}%
-                    [4em]%
-                    {\addvspace{6pt}}%
-		   {\thecontentslabel\enspace}%
-		   {}%
-		   {\dotfill\contentspage}%
 
 
 % 定义自己常用的东西
@@ -85,9 +46,5 @@
         \end{minipage}
     }
 }
-
-% 假设 的格式定义
-\usepackage{ntheorem}
-\newtheorem{hyp}{假设}
 
 \endinput
