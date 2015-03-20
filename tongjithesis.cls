@@ -31,7 +31,7 @@
 \ExecuteOptions{utf,arialtitle} %参数之间用逗号分割,不能有空格
 
 \ProcessOptions\relax
-\LoadClass[cs4size,a4paper,openright,nocap,UTF8]{ctexbook}
+\LoadClass[cs4size,a4paper,openany,nocap,UTF8]{ctexbook}
 
 %% 指定论文类型，若未指定则报错
 \iftongji@master\relax\else
@@ -159,7 +159,7 @@
 
 %% 正文字体小四（12pt），行距为固定值20磅
 \renewcommand\normalsize{%
-  \@setfontsize\normalsize{12bp}{20bp}
+  \@setfontsize\normalsize{12pt}{20bp}
   \abovedisplayskip=10bp \@plus 2bp \@minus 2bp
   \abovedisplayshortskip=10bp \@plus 2bp \@minus 2bp
   \belowdisplayskip=\abovedisplayskip
@@ -180,9 +180,9 @@
 \setlength{\evensidemargin}{\oddsidemargin}
 \setlength{\topskip}{0pt}
 \setlength{\skip\footins}{15pt}
-\setlength{\topmargin}{2.54cm-\headheight}
-\setlength{\footskip}{1.3cm}
-\setlength{\headsep}{0.7em} %控制页面第一行上面的空白空间 0.7行
+\setlength{\topmargin}{3cm}
+\setlength{\footskip}{0.6cm}
+\setlength{\headsep}{14bp} %控制页面第一行上面的空白空间 0.7行
 
 %% 页眉页脚设置
 \let\tongji@cleardoublepage\cleardoublepage
@@ -199,7 +199,7 @@
 \def\ps@tongji@plain{%
   \let\@oddhead\@empty%
   \let\@evenhead\@empty%
-  \def\@oddfoot{\hfil\wuhao\thepage\hfil}%
+  \def\@oddfoot{\hfil\xiaowu\thepage\hfil}%
   \let\@evenfoot=\@oddfoot}
 
 % 有章节号的 正文章节 页眉页脚设置
@@ -210,7 +210,7 @@
   \def\@evenhead{\vbox to\headheight{%
       \hb@xt@\textwidth{\wuhao\songti\tongji@cschoolname\hspace{0.5em}\tongji@capply\hspace{0.5em}\tongji@ctitle \hfill}%
       \vskip2pt\hbox{\vrule width\textwidth height0.6pt depth0pt}}}
-  \def\@oddfoot{\hfill\wuhao\thepage\hfill}
+  \def\@oddfoot{\hfill\xiaowu\thepage\hfill}
   \let\@evenfoot=\@oddfoot}
 
 % 没有有章节号的 章节 页眉页脚设置
@@ -221,7 +221,7 @@
   \def\@evenhead{\vbox to\headheight{%
       \hb@xt@\textwidth{\wuhao\songti\tongji@cschoolname\hspace{0.5em}\tongji@capply\hspace{0.5em}\leftmark\hfill}%
       \vskip2pt\hbox{\vrule width\textwidth height0.6pt depth0pt}}}
-  \def\@oddfoot{\hfill\wuhao\thepage\hfill}
+  \def\@oddfoot{\hfill\xiaowu\thepage\hfill}
   \let\@evenfoot=\@oddfoot}
 
 % 英文摘要 页眉页脚设置
@@ -232,13 +232,13 @@
   \def\@evenhead{\vbox to\headheight{%
       \hb@xt@\textwidth{\wuhao\songti\tongji@eschoolname\hspace{0.5em}\tongji@eapplyshort\hspace{0.5em}\leftmark\hfill}%
       \vskip2pt\hbox{\vrule width\textwidth height0.6pt depth0pt}}}
-  \def\@oddfoot{\hfill\wuhao\thepage\hfill}
+  \def\@oddfoot{\hfill\xiaowu\thepage\hfill}
   \let\@evenfoot=\@oddfoot}
 
 \renewcommand{\chaptermark}[1]{\@mkboth{\@chapapp\  ~~#1}{}}
 
 %% 段落设置
-\setlength{\parskip}{0pt \@plus2pt \@minus0pt}
+\setlength{\parskip}{0pt}
 \def\tongji@item@space{%
   \let\itemize\compactitem
   \let\enditemize\endcompactitem
@@ -313,12 +313,12 @@
 \theoremheaderfont{\heiti\rmfamily}
 
 %% 浮动对象以及表格设置
-\setlength{\floatsep}{2bp \@plus4pt \@minus1pt}
-\setlength{\intextsep}{2bp \@plus4pt \@minus2pt}
-\setlength{\textfloatsep}{12bp \@plus4pt \@minus2pt}
-\setlength{\@fptop}{0bp \@plus1.0fil}
-\setlength{\@fpsep}{12bp \@plus2.0fil}
-\setlength{\@fpbot}{0bp \@plus1.0fil}
+\setlength{\floatsep}{2bp}
+\setlength{\intextsep}{2bp}
+\setlength{\textfloatsep}{12bp}
+\setlength{\@fptop}{0bp}
+\setlength{\@fpsep}{12bp}
+\setlength{\@fpbot}{0bp}
 \renewcommand{\textfraction}{0.15}
 \renewcommand{\topfraction}{0.85}
 \renewcommand{\bottomfraction}{0.65}
@@ -329,8 +329,8 @@
 \DeclareCaptionLabelSeparator{tongji}{\hspace{1em}}
 \DeclareCaptionFont{tongji}{\songti\wuhao[1]}
 \captionsetup{labelformat=tongji,labelsep=tongji,font=tongji}
-\captionsetup[table]{position=top,belowskip={6bp-\intextsep},aboveskip=6bp}
-\captionsetup[figure]{position=bottom,belowskip={12bp-\intextsep},aboveskip=6bp}
+\captionsetup[table]{position=top,belowskip=6bp,aboveskip=6bp}
+\captionsetup[figure]{position=bottom,belowskip=12bp,aboveskip=6bp}
 \captionsetup[subfloat]{labelformat=simple,font=tongji,captionskip=6bp,nearskip=6bp,farskip=0bp,topadjust=0bp}
 \renewcommand{\thesubfigure}{(\alph{subfigure})}
 \renewcommand{\thesubtable}{(\alph{subtable})}
@@ -475,7 +475,7 @@
 \renewcommand*\l@chapter[2]{%
   \ifnum \c@tocdepth >\m@ne
     \addpenalty{-\@highpenalty}%
-    \vskip 4bp \@plus\p@
+    %\vskip 4bp \@plus\p@
     \setlength\@tempdima{4em}%
     \begingroup
       \parindent \z@ \rightskip \@pnumwidth
@@ -483,7 +483,7 @@
       \leavevmode
       \advance\leftskip\@tempdima
       \hskip -\leftskip
-      {\heiti\csname tongji@toc@font\endcsname #1} % numberline is called here, and it uses \@tempdima
+      {\songti\csname tongji@toc@font\endcsname #1} % numberline is called here, and it uses \@tempdima
       \leaders\hbox{$\m@th\mkern \@dotsep mu\hbox{.}\mkern \@dotsep mu$}\hfill
       \nobreak{\normalfont\normalcolor #2}\par
       \penalty\@highpenalty
@@ -730,6 +730,7 @@
 %% 致谢设置
 \newenvironment{ack}{%
   \tongji@chapter*[\tongji@acklongname]{\tongji@ackname}[\tongji@acklongname]
+  \fangsong
   \thispagestyle{tongji@headings@noseq}}
 
 %% 索引设置

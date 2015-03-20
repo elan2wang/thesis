@@ -1,5 +1,6 @@
 *.thm
 *.log
+*.out
 *.aux
 *.gz
 *.toc
